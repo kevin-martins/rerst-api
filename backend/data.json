@@ -1,0 +1,187 @@
+{
+  "users": [
+    {
+      "first_name": "Kevin",
+      "last_name": "Martins",
+      "age": 25,
+      "phone_number": "0612345001",
+      "address": "12 Rue de l'Eglise, 31000 Toulouse"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "age": 30,
+      "phone_number": "0612345002",
+      "address": "139 Rue Principale, 75001 Paris"
+    },
+    {
+      "first_name": "Alex",
+      "last_name": "Johnson",
+      "age": 20,
+      "phone_number": "0612345003",
+      "address": "131 Rue Principale, 75001 Paris"
+    },
+    {
+      "first_name": "Sophie",
+      "last_name": "Brown",
+      "age": 23,
+      "phone_number": "0612345004",
+      "address": "123 Rue Principale, 75001 Paris"
+    },
+    {
+      "first_name": "Emma",
+      "last_name": "Wilson",
+      "age": 28,
+      "phone_number": "0612345005",
+      "address": "826 Route de la Forêt, 31000 Toulouse"
+    },
+    {
+      "first_name": "Daniel",
+      "last_name": "Taylor",
+      "age": 32,
+      "phone_number": "0612345006",
+      "address": "789 Route de la Forêt, 31000 Toulouse"
+    },
+    {
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "age": 28,
+      "phone_number": "0612345007",
+      "address": "813 Route de la Forêt, 31000 Toulouse"
+    },
+    {
+      "first_name": "Michael",
+      "last_name": "Johnson",
+      "age": 35,
+      "phone_number": "0612345008",
+      "address": "433 Avenue des Chênes, 69002 Lyon"
+    },
+    {
+      "first_name": "Liam",
+      "last_name": "Smith",
+      "age": 40,
+      "phone_number": "0612345009",
+      "address": "386 Avenue des Chênes, 69002 Lyon"
+    },
+    {
+      "first_name": "Olivia",
+      "last_name": "Johnson",
+      "age": 45,
+      "phone_number": "0612345010",
+      "address": "412 Avenue des Chênes, 69002 Lyon"
+    },
+    {
+      "first_name": "Ava",
+      "last_name": "Wilson",
+      "age": 65,
+      "phone_number": "0612345011",
+      "address": "138 Chemin de l'Érable, 44000 Nantes"
+    },
+    {
+      "first_name": "Lucas",
+      "last_name": "Brown",
+      "age": 50,
+      "phone_number": "0612345012",
+      "address": "145 Chemin de l'Érable, 44000 Nantes"
+    },
+    {
+      "first_name": "Sarah",
+      "last_name": "Davis",
+      "age": 27,
+      "phone_number": "0612345013",
+      "address": "112 Chemin de l'Érable, 44000 Nantes"
+    }
+  ],
+  "places": [
+    {
+      "address": "843 Chemin des Taupes, 44000 Nantes",
+      "phone_number": "0612345014",
+      "required_pass_level": 5,
+      "required_age_level": 47
+    },
+    {
+      "address": "478 Rue de la Tulipes, 75002 Paris",
+      "phone_number": "0612345015",
+      "required_pass_level": 5,
+      "required_age_level": 32
+    },
+    {
+      "address": "110 Avenue des Champs, 69003 Lyon",
+      "phone_number": "0612345016",
+      "required_pass_level": 5,
+      "required_age_level": 25
+    },
+    {
+      "address": "320 Rue des Dames, 69003 Lyon",
+      "phone_number": "0612345017",
+      "required_pass_level": 4,
+      "required_age_level": 36
+    },
+    {
+      "address": "456 Rue de la Liberté, 75002 Paris",
+      "phone_number": "0612345018",
+      "required_pass_level": 4,
+      "required_age_level": 30
+    },
+    {
+      "address": "789 Avenue des Roses, 69003 Lyon",
+      "phone_number": "0612345019",
+      "required_pass_level": 4,
+      "required_age_level": 23
+    },
+    {
+      "address": "421 Chemin de la Seine, 75002 Paris",
+      "phone_number": "0612345020",
+      "required_pass_level": 3,
+      "required_age_level": 38
+    },
+    {
+      "address": "1010 Chemin de la Plage, 31200 Toulouse",
+      "phone_number": "0612345021",
+      "required_pass_level": 3,
+      "required_age_level": 32
+    },
+    {
+      "address": "1234 Avenue des Pins, 44005 Nantes",
+      "phone_number": "0612345022",
+      "required_pass_level": 3,
+      "required_age_level": 26
+    },
+    {
+      "address": "5678 Rue du Soleil, 75006 Paris",
+      "phone_number": "0612345023",
+      "required_pass_level": 2,
+      "required_age_level": 54
+    },
+    {
+      "address": "91011 Avenue de la Lune, 69007 Lyon",
+      "phone_number": "0612345024",
+      "required_pass_level": 2,
+      "required_age_level": 45
+    },
+    {
+      "address": "835 Chemin de la Digue, 31004 Toulouse",
+      "phone_number": "0612345025",
+      "required_pass_level": 2,
+      "required_age_level": 18
+    },
+    {
+      "address": "1213 Chemin de la Montagne, 31008 Toulouse",
+      "phone_number": "0612345026",
+      "required_pass_level": 1,
+      "required_age_level": 42
+    },
+    {
+      "address": "1415 Rue de l'Océan, 44010 Nantes",
+      "phone_number": "0612345027",
+      "required_pass_level": 1,
+      "required_age_level": 35
+    },
+    {
+      "address": "200 Rue de la Mer, 44005 Nantes",
+      "phone_number": "0612345028",
+      "required_pass_level": 1,
+      "required_age_level": 21
+    }
+  ]
+}
