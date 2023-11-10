@@ -8,15 +8,16 @@ describe('User Routes', () => {
     const res = await request(server)
       .post('/users')
       .send({
-        first_name: 'Homer',
-        last_name: 'Simpson',
-        age: 30,
-        phone_number: '0688551136',
-        address: '123 Main St'
+        first_name: "Kevin",
+        last_name: "Martins",
+        age: 25,
+        phone_number: "0612345001",
+        address: "12 Rue de l'Eglise, 31000 Toulouse"
       });
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
+    expect(res.body).toHaveProperty('pass_id');
     userId = res.body._id;
   });
 
@@ -44,11 +45,11 @@ describe('User Routes', () => {
   it('should delete a user by ID', async () => {
     const res = await request(server).delete(`/users/${userId}`);
 
-    expect(res.statusCode).toBe(204);
+    expect(res.statusCode).toBe(200);
   });
 
   it('should return 404 when trying to get a non-existent user', async () => {
-    const res = await request(server).get('/users/nonexistent_id');
+    const res = await request(server).get('/users/none');
 
     expect(res.statusCode).toBe(404);
   });
