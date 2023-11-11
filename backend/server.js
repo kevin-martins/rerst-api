@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsdoc = require("swagger-jsdoc");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 mongoose.connect(process.env.MONGO_URI);
 
@@ -16,6 +17,12 @@ mongoose.connection.on("error", err => {
 mongoose.connection.on("connected", (err, res) => {
   console.log("Mongoose is connected")
 })
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
