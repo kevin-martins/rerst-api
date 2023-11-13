@@ -6,7 +6,6 @@ const passSchema = new mongoose.Schema({
     min: [1, "Error: level should be between 1 and 5"],
     max: [5, "Error: level should be between 1 and 5"],
     required: [true, "Error: level is required"],
-    unique: true
   },
   created_at: {
     type: Date,
