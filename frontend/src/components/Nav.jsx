@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 const Nav = () => {
 	const navigation = [
 		{ title: "Accueil", href: "/" },
+		{ title: "Utilisateurs", href: "/users" },
 		{ title: "Places", href: "/places" },
 	]
   return (
-    <nav className='w-2/3 bg-slate-900 mx-auto p-4 shadow-lg rounded-lg text-white'>
+    <nav className='max-w-5xl bg-slate-900 mx-auto p-3 shadow-lg rounded-lg text-white'>
 			<ul className='flex gap-4'>
 				{navigation.map(nav => (
 					<li
@@ -15,7 +16,7 @@ const Nav = () => {
 					>
 						<Link
 							to={nav.href}
-							className='inline-block w-32 py-2 text-center rounded-md bg-black hover:bg-yellow-500 hover:text-yellow-900'
+							className='inline-block w-36 py-2 text-center rounded-md bg-black hover:bg-yellow-500 hover:text-yellow-900'
 						>
 							{nav.title}
 						</Link>

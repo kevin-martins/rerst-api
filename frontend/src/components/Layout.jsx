@@ -9,7 +9,7 @@ const Layout = () => {
       <header className='w-full p-8'>
         <Nav />
       </header>
-      <main className='container mx-auto'>
+      <main className='container w-full mx-auto'>
         <Outlet />
       </main>
     </div>
