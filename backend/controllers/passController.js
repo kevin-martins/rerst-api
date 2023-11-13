@@ -161,6 +161,7 @@ exports.updatePass = async (req, res) => {
     if (req.body.level > 5 || req.body.level < 1) {
       return res.status(400).json({ massage: 'Pass\'s level beyond the boundaries' });
     }
+
     const pass = await Pass.findByIdAndUpdate(
       req.params.passId,
       {

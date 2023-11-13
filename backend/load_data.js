@@ -6,27 +6,41 @@ mongoose.connect(process.env.MONGO_URI);
 
 const data = require('./data.json');
 
+const convertUserForDB = (user, pass) => {
+  const data = {
+    ...user,
+  }
+}
+
 async function loadUsers() {
   try {
     const existingUsers = await User.find({});
 
     if (existingUsers.length === 0) {
-      const users = await User.insertMany(data.users.map(async user => {
-        console.log('before pass: ')
-        const pass = await Pass.create();
-        return convertUserForDB(user, pass._id);
-      }));
-      users.forEach(user => {
-        console.log(`User: ${user._id} has successfully been created`);
-        console.log(`\t- pass_id: ${user.pass_id}`);
-      })
+      await Promise.all(data.users.map(async user => {
+        const pass = await Pass.create({ level: 1 });
+        return {
+          ...user,
+          pass_id: pass._id
+        };
+      }))
+        .then(res => User.insertMany(res))
+        .then(users => {
+          users.forEach(user => {
+            console.log(`User: ${user._id} has successfully been created`);
+            console.log(`  - pass_id: ${user.pass_id}`);
+          });
+        })
     } else {
       for (const userData of data.users) {
         const existingUser = existingUsers.find(user => user.phone_number === userData.phone_number);
 
         if (!existingUser) {
-          const pass = await Pass.create();
-          const user = await User.create(convertUserForDB(userData, pass._id));
+          const pass = await Pass.create({ level: 1 });
+          const user = await User.create({
+            ...userData,
+            pass_id: pass._id
+          });
           console.log(`User: ${user._id} has successfully been created`);
           console.log(`\t- pass_id: ${user.pass_id}`);
         } else {
@@ -36,7 +50,7 @@ async function loadUsers() {
       }
     }
   } catch (err) {
-    console.error('An error occurs in the loadUsers()');
+    console.error('An error occurs in the loadUsers()', err);
   }
 }
 
