@@ -9,15 +9,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './pages/Home';
-import User from './pages/User';
-import Pass from './pages/Pass';
+import UserId from './pages/UserId';
+import PassId from './pages/PassId';
+import Users from './pages/Users';
+import Places from './pages/Places';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
-      <Route path="/users/:id" element={<User />} />
-      <Route path="/passes/:id" element={<Pass />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/places" element={<Places />} />
+      <Route path="/users/:id" element={<UserId />} />
+      <Route path="/passes/:id" element={<PassId />} />
     </Route>
   )
 )
