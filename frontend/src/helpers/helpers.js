@@ -15,3 +15,20 @@ export const changeDate = (date) => {
   const [day, dateTime, month, ...others] = new Date(date).toLocaleDateString('fr-FR', options).split(' ');
   return capitalize(day) + ' ' + dateTime + ' ' + capitalize(month) + ' ' + others.join(' ');
 }
+
+export const mapUserData = (data) => {
+  const array = []
+  const convert = {
+    "first_name": "prénom",
+    "last_name": "nom",
+    "age": "age",
+    "phone_number": "téléphone",
+    "address": "adresse"
+  }
+  for (const [key, value] of Object.entries(data)) {
+    if (key in convert) {
+      array.push({ name: convert[key], key, value })
+    }
+  }
+  return array
+}
