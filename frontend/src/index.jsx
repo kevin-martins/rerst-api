@@ -13,6 +13,8 @@ import UserId from './pages/UserId';
 import PassId from './pages/PassId';
 import Users from './pages/Users';
 import Places from './pages/Places';
+import PlaceId from './pages/PlaceId';
+import UserAvailablePlaces from './pages/UserAvailablePlaces';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,8 +22,10 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/users" element={<Users />} />
       <Route path="/places" element={<Places />} />
+      <Route path="/places/:id" element={<PlaceId />} />
       <Route path="/users/:id" element={<UserId />} />
       <Route path="/passes/:id" element={<PassId />} />
+      <Route path="/users/:id/places" element={<UserAvailablePlaces />} />
     </Route>
   )
 )
