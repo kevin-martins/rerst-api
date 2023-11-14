@@ -83,13 +83,6 @@
  *           type: string
  *           description: The place id
  *           example: 654a7b1fd1dcc64593f2f933
- *     UserAccessResponse:
- *       type: object
- *       properties:
- *         hasAccess:
- *           type: boolean
- *           description: The place's access value
- *           example: true
  */
 
 const express = require('express');
@@ -102,7 +95,7 @@ router.get('/users/:userId', UserController.getUserById);
 router.put('/users/:userId', UserController.updateUser);
 router.delete('/users/:userId', UserController.deleteUser);
 
-router.post('/users/:userId/access', UserController.checkAccess);
+router.post('/users/:userId/access', UserController.checkPlaceAccess);
 router.get('/users/:userId/places', UserController.getPlacesByUserId);
 
 module.exports = router;
