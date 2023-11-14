@@ -46,40 +46,44 @@ const UserInfo = (props) => {
 
   return (
     <div>
-      <section className='flex'>
-        <h1 className='text-xl mr-1'>Welcome back </h1>
-        <span className='mt-auto'>{props.last_name} {props.first_name}</span>
+      <section className='flex mb-8'>
+        <h1 className='text-3xl mr-2'>Welcome back </h1>
+        <span className='text-xl mt-auto'>{props.last_name} {props.first_name}</span>
       </section>
-      <h2 className='w-max text-lg'>
+      <h2 className='w-max text-2xl'>
         Informations
         <div className='h-[.5px] bg-white' />
       </h2>
-      <p>
-        niveau actuel du pass: {passLevel} <Link to={`/passes/${props.pass_id}`} className='ml-3 inline-block w-48 text-center rounded p-2 bg-blue-500 text-white hover:bg-blue-600'>changer de pass</Link>
-      </p>
-      <form
-        className="max-w-md mx-auto flex flex-col gap-2"
-        onSubmit={handleSubmit}
-      >
-        {mapUserData(data).map(prop => (
-        <div key={prop.key} className="flex">
-          <label htmlFor={prop.key} className="pr-2 my-auto w-28">
-            {capitalize(prop.name)}:
-          </label>
-          <input
-            type="text"
-            id={prop.key}
-            name={prop.key}
-            value={prop.value}
-            onChange={handleChange}
-            className="w-full p-2 rounded text-black outline-none"
-          />
+      <section className='max-w-md grid gap-6 mx-auto mt-5'>
+        <div className='flex flex-row'>
+          <p className='my-auto shrink-0'>niveau actuel du pass: </p>
+          <p className='text-lg m-auto px-3'>{passLevel}</p>
+          <Link to={`/passes/${props.pass_id}`} className='w-full text-center rounded p-2 bg-blue-500 text-white hover:bg-blue-600'>changer de pass</Link>
         </div>
-        ))}
-      <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600">
-        Modifier
-      </button>
-    </form>
+        <form
+          className="max-w-md flex flex-col gap-2"
+          onSubmit={handleSubmit}
+        >
+          {mapUserData(data).map(prop => (
+          <div key={prop.key} className="flex">
+            <label htmlFor={prop.key} className="pr-2 my-auto w-28">
+              {capitalize(prop.name)}:
+            </label>
+            <input
+              type="text"
+              id={prop.key}
+              name={prop.key}
+              value={prop.value}
+              onChange={handleChange}
+              className="w-full p-2 rounded text-black outline-none"
+            />
+          </div>
+          ))}
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600">
+          Modifier
+        </button>
+      </form>
+      </section>
     </div>
   )
 }
