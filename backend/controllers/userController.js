@@ -133,9 +133,11 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UserAccessResponse'
+ *               $ref: '#/components/schemas/PlaceResponse'
+ *       403:
+ *         description: The user has not been authorized
  *       404:
- *         description: The user's access on a place has not been 
+ *         description: The user, the place or the pass have not been found
  *       500:
  *         description: Some server error
  * /users/{id}/places:
@@ -159,7 +161,7 @@
  *               items:
  *                 $ref: '#/components/schemas/PlaceResponse'
  *       404:
- *         description: The user's places has not been found
+ *         description: The user, the place or the pass have not been found
  *       500:
  *         description: Some server error
  */
@@ -239,7 +241,7 @@ exports.deleteUser = async (req, res) => {
   }
 }
 
-exports.checkAccess = async (req, res) => {
+exports.checkPlaceAccess = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
@@ -256,8 +258,11 @@ exports.checkAccess = async (req, res) => {
       return res.status(404).json({ message: 'Place has not been found' });
     }
 
-    const hasAccess = user.age >= place.required_age_level && pass.level >= place.required_pass_level;
-    res.status(200).json({ hasAccess });
+    if (user.age >= place.required_age_level && pass.level >= place.required_pass_level) {
+      return res.status(200).json(place);
+    } else {
+      return res.status(403).json({ message: "Unauthorized" })
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
