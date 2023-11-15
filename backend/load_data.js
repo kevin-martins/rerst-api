@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const { User, Pass, Place } = require('./models/index.js');
 
 mongoose.connect(process.env.MONGO_URI);
@@ -19,30 +20,63 @@ async function loadUsers() {
     if (existingUsers.length === 0) {
       await Promise.all(data.users.map(async user => {
         const pass = await Pass.create({ level: 1 });
+        if (!pass) {
+          return "Error: the pass has not successfully been created";
+        }
+
+        const hashedPassword = await bcrypt.hash(user.password, 12);
+        if (!hashedPassword) {
+          "Erorr: the hashed password has not successfully been created";
+        }
+
         return {
           ...user,
-          pass_id: pass._id
+          pass_id: pass._id,
+          password: hashedPassword
         };
       }))
-        .then(res => User.insertMany(res))
+        .then(users => User.insertMany(users))
         .then(users => {
           users.forEach(user => {
             console.log(`User: ${user._id} has successfully been created`);
             console.log(`  - pass_id: ${user.pass_id}`);
-          });
+          })
+        })
+        .catch(err => {
+          console.log(err)
         })
     } else {
       for (const userData of data.users) {
-        const existingUser = existingUsers.find(user => user.phone_number === userData.phone_number);
+        const existingUser = await existingUsers.find(user => user.phone_number === userData.phone_number);
 
         if (!existingUser) {
-          const pass = await Pass.create({ level: 1 });
-          const user = await User.create({
-            ...userData,
-            pass_id: pass._id
-          });
-          console.log(`User: ${user._id} has successfully been created`);
-          console.log(`\t- pass_id: ${user.pass_id}`);
+          const newUser = new Promise(async (resolve, reject) => {
+            const pass = await Pass.create({ level: 1 });
+            if (!pass) {
+              reject("Error: the pass has not successfully been created");
+            }
+
+            const hashedPassword = await bcrypt.hash(userData.password, 12);
+            if (!hashedPassword) {
+              reject("Erorr: the hashed password has not successfully been created");
+            }
+
+            resolve({
+              ...userData,
+              pass_id: pass._id,
+              password: hashedPassword
+            })
+          })
+
+          newUser
+            .then(user => User.create(user))
+            .then(user => {
+              console.log(`User: ${user._id} has successfully been created`);
+              console.log(`  - pass_id: ${user.pass_id}`);
+            })
+            .catch(err => {
+              console.log(err)
+            })
         } else {
           console.log(`User: ${existingUser._id} is already in the Database`);
           console.log(`\t- pass_id: ${existingUser.pass_id}`);
@@ -83,7 +117,7 @@ async function loadPlaces() {
 async function loadData() {
   try {
     await loadUsers();
-    // await loadPlaces();
+    await loadPlaces();
     console.log('Données chargées avec succès');
   } catch (error) {
     console.error('Erreur lors du chargement des données :', error);
