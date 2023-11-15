@@ -15,11 +15,13 @@ import Users from './pages/Users';
 import Places from './pages/Places';
 import PlaceId from './pages/PlaceId';
 import UserAvailablePlaces from './pages/UserAvailablePlaces';
+import Auth from './pages/Auth';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
+      <Route path="/login" element={<Auth />} />
       <Route path="/users" element={<Users />} />
       <Route path="/places" element={<Places />} />
       <Route path="/places/:id" element={<PlaceId />} />
