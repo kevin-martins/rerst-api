@@ -8,7 +8,7 @@ const PlaceId = () => {
   const [place, setPlace] = useState(null)
 
   useEffect(() => {
-    fetch(`http://localhost:4000/places/${id}`)
+    fetch(`http://localhost:8080/places/${id}`)
     .then((res) => res.json())
       .then((res) => {
         setPlace(res);

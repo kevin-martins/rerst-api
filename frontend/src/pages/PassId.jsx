@@ -11,7 +11,7 @@ const PassId = () => {
   const [data, setData] = useState()
 
   useEffect(() => {
-    fetch(`http://localhost:4000/passes/${id}`, {})
+    fetch(`http://localhost:8080/passes/${id}`, {})
       .then((res) => res.json())
       .then((res) => {
         setData(res);

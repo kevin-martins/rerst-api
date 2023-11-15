@@ -8,7 +8,7 @@ const UserInfo = (props) => {
   const [data, setData] = useState(props);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/passes/${props.pass_id}`, {})
+    fetch(`http://localhost:8080/passes/${props.pass_id}`, {})
       .then((res) => res.json())
       .then((res) => {
         setPassLevel(res.level);
@@ -18,7 +18,7 @@ const UserInfo = (props) => {
 
   const handleSubmit = (e) => {
     setIsLoading(true)
-    fetch(`http://localhost:4000/users/${props._id}`, {
+    fetch(`http://localhost:8080/users/${props._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"

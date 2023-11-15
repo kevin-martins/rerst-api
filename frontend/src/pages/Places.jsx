@@ -6,7 +6,7 @@ const Places = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [places, setPlaces] = useState([])
   useEffect(() => {
-    fetch('http://localhost:4000/places')
+    fetch('http://localhost:8080/places')
     .then((res) => res.json())
       .then((res) => {
         setPlaces(res);

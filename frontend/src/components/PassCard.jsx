@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const PassCard = ({ passId, setUpdate, currentLevel, level }) => {
   const handleClick = () => {
-    fetch(`http://localhost:4000/passes/${passId}`, {
+    fetch(`http://localhost:8080/passes/${passId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
