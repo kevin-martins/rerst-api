@@ -5,6 +5,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsdoc = require("swagger-jsdoc");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { auth } = require('./routes/middleware');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -26,6 +27,8 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
+// app.use("/", auth);
+
 const userRoutes = require('./routes/userRoutes');
 app.use(userRoutes);
 
@@ -34,7 +37,6 @@ app.use(passRoutes);
 
 const placeRoutes = require('./routes/placeRoutes');
 app.use(placeRoutes);
-
 
 const options = {
   definition: {
@@ -59,11 +61,6 @@ app.use(
   swaggerUI.serve,
   swaggerUI.setup(specs, { explorer: true })
 );
-
-app.get('/users/6546852446e2791074fd8f13/access', (req, res) => {
-  // res.send('Hello, World!');
-  console.log(req.body)
-});
 
 app.post('/')
 

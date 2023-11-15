@@ -112,7 +112,7 @@
  *         description: Some server error
  * /users/{id}/access:
  *   get:
- *     summary: Get the user access on a place by id
+ *     summary: Get the place if the user can access it
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -142,7 +142,7 @@
  *         description: Some server error
  * /users/{id}/places:
  *   post:
- *     summary: Get the user's places by id
+ *     summary: Get all the available places for a user
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -153,7 +153,7 @@
  *         description: The user id
  *     responses:
  *       200:
- *         description: The user's places by user id
+ *         description: The available places for a user
  *         content:
  *           application/json:
  *             schema:
@@ -172,7 +172,7 @@ exports.createUser = async (req, res) => {
   try {
     const pass = await Pass.create({ level: 1 });
     if (!pass) {
-      return res.status(404).json({ message: 'Pass has not been created' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been created' });
     }
 
     const user = await User.create({
@@ -180,7 +180,7 @@ exports.createUser = async (req, res) => {
       pass_id: pass._id
     });
     if (!user) {
-      return res.status(404).json({ message: 'User has not been created' });
+      return res.status(404).json({ message: 'Error: user has not successfully been created' });
     }
 
     res.status(201).json(user);
@@ -193,7 +193,7 @@ exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
     if (!users) {
-      return res.status(404).json({ message: 'Users has not been found' });
+      return res.status(404).json({ message: 'Error: users has not successfully been found' });
     }
 
     res.status(200).json(users);
@@ -206,7 +206,7 @@ exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return res.status(404).json({ message: 'User has not been found' });
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
     res.status(200).json(user);
@@ -219,7 +219,7 @@ exports.updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
     if (!user) {
-      return res.status(404).json({ message: 'User has not been updated' });
+      return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }
 
     res.status(200).json(user);
@@ -232,7 +232,7 @@ exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.userId);
     if (!user) {
-      return res.status(404).json({ message: 'User has not been updated' });
+      return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
     }
 
     res.status(200).json(user);
@@ -245,23 +245,23 @@ exports.checkPlaceAccess = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return res.status(404).json({ message: 'User has not been found' });
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
     const pass = await Pass.findById(user.pass_id);
     if (!pass) {
-      return res.status(404).json({ message: 'Pass has not been found' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
     }
 
     const place = await Place.findById(req.body.placeId);
     if (!place) {
-      return res.status(404).json({ message: 'Place has not been found' });
+      return res.status(404).json({ message: 'Error: place has not successfully been found' });
     }
 
     if (user.age >= place.required_age_level && pass.level >= place.required_pass_level) {
       return res.status(200).json(place);
     } else {
-      return res.status(403).json({ message: "Unauthorized" })
+      return res.status(403).json({ message: 'Error: you are not unauthorized to access this page' })
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -272,12 +272,12 @@ exports.getPlacesByUserId = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return res.status(404).json({ message: 'User has not been found' });
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
     const pass = await Pass.findById(user.pass_id);
     if (!pass) {
-      return res.status(404).json({ message: 'Pass has not been found' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
     }
     
     const places = await Place.find({
@@ -285,7 +285,7 @@ exports.getPlacesByUserId = async (req, res) => {
       required_pass_level: { $lte: pass.level }
     });
     if (!places) {
-      return res.status(404).json({ message: 'Places has not been found' });
+      return res.status(404).json({ message: 'Error: places has not successfully been found' });
     }
 
     res.status(200).json(places);
