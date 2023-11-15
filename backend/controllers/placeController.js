@@ -116,8 +116,11 @@ const { Place } = require('../models');
 
 exports.createPlace = async (req, res) => {
   try {
-    const place = new Place(req.body);
-    await place.save();
+    const place = await Place.create(req.body);
+    if (!place) {
+      return res.status(404).json({ message: 'Error: place has not successfully been created' });
+    }
+
     res.status(201).json(place);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -127,6 +130,10 @@ exports.createPlace = async (req, res) => {
 exports.getAllPlaces = async (req, res) => {
   try {
     const place = await Place.find({});
+    if (!place) {
+      return res.status(404).json({ message: 'Error: places has not successfully been found' });
+    }
+
     res.status(200).json(place);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -136,6 +143,10 @@ exports.getAllPlaces = async (req, res) => {
 exports.getPlaceById = async (req, res) => {
   try {
     const place = await Place.findById(req.params.placeId);
+    if (!place) {
+      return res.status(404).json({ message: 'Error: place has not successfully been found' });
+    }
+
     res.status(200).json(place);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -145,6 +156,10 @@ exports.getPlaceById = async (req, res) => {
 exports.updatePlace = async (req, res) => {
   try {
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
+    if (!place) {
+      return res.status(404).json({ message: 'Error: place has not successfully been updated' });
+    }
+
     res.status(200).json(place);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -154,6 +169,10 @@ exports.updatePlace = async (req, res) => {
 exports.deletePlace = async (req, res) => {
   try {
     const place = await Place.findByIdAndDelete(req.params.placeId);
+    if (!place) {
+      return res.status(404).json({ message: 'Error: place has not successfully been deleted' });
+    }
+
     res.status(200).json(place);
   } catch (err) {
     res.status(500).json({ error: err.message });

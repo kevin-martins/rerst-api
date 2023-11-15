@@ -117,9 +117,8 @@ const { Pass } = require('../models');
 exports.createPass = async (req, res) => {
   try {
     const pass = await Pass.create(req.body);
-
     if (!pass) {
-      return res.status(404).json({ massage: 'Passes has not successfully been created' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been created' });
     }
 
     res.status(201).json(pass);
@@ -131,9 +130,8 @@ exports.createPass = async (req, res) => {
 exports.getAllPasses = async (req, res) => {
   try {
     const pass = await Pass.find({});
-
     if (!pass) {
-      return res.status(404).json({ massage: 'Passes has not successfully been found' });
+      return res.status(404).json({ message: 'Error: passes has not successfully been found' });
     }
 
     res.status(200).json(pass);
@@ -145,9 +143,8 @@ exports.getAllPasses = async (req, res) => {
 exports.getPassById = async (req, res) => {
   try {
     const pass = await Pass.findById(req.params.passId);
-
     if (!pass) {
-      return res.status(404).json({ massage: 'Pass has not successfully been found' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
     }
 
     res.status(200).json(pass);
@@ -158,8 +155,9 @@ exports.getPassById = async (req, res) => {
 
 exports.updatePass = async (req, res) => {
   try {
-    if (req.body.level > 5 || req.body.level < 1) {
-      return res.status(400).json({ massage: 'Pass\'s level beyond the boundaries' });
+    const { level } = req.body;
+    if (level > 5 || level < 1) {
+      return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
     }
 
     const pass = await Pass.findByIdAndUpdate(
@@ -170,9 +168,8 @@ exports.updatePass = async (req, res) => {
       },
       { new: true }
     );
-
     if (!pass) {
-      return res.status(404).json({ massage: 'Pass has not successfully been updated' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been updated' });
     }
 
     res.status(200).json(pass);
@@ -184,9 +181,8 @@ exports.updatePass = async (req, res) => {
 exports.deletePass = async (req, res) => {
   try {
     const pass = await Pass.findByIdAndDelete(req.params.passId);
-
     if (!pass) {
-      return res.status(404).json({ massage: 'Pass has not successfully been deleted' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been deleted' });
     }
 
     res.status(200).json(pass);
