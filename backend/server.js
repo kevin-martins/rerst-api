@@ -5,6 +5,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsdoc = require("swagger-jsdoc");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { auth } = require('./routes/middleware');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -25,6 +26,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
+// app.use("/", auth);
 
 const userRoutes = require('./routes/userRoutes');
 app.use(userRoutes);
