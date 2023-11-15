@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 mongoose.connect(process.env.MONGO_URI);
 
@@ -35,7 +35,6 @@ app.use(passRoutes);
 const placeRoutes = require('./routes/placeRoutes');
 app.use(placeRoutes);
 
-
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -59,11 +58,6 @@ app.use(
   swaggerUI.serve,
   swaggerUI.setup(specs, { explorer: true })
 );
-
-app.get('/users/6546852446e2791074fd8f13/access', (req, res) => {
-  // res.send('Hello, World!');
-  console.log(req.body)
-});
 
 app.post('/')
 
