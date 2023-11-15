@@ -5,91 +5,104 @@
       "last_name": "Martins",
       "age": 25,
       "phone_number": "0612345001",
-      "address": "12 Rue de l'Eglise, 31000 Toulouse"
+      "address": "12 Rue de l'Eglise, 31000 Toulouse",
+      "password": "Pass1234"
     },
     {
       "first_name": "John",
       "last_name": "Doe",
       "age": 30,
       "phone_number": "0612345002",
-      "address": "139 Rue Principale, 75001 Paris"
+      "address": "139 Rue Principale, 75001 Paris",
+      "password": "Pass5678"
     },
     {
       "first_name": "Alex",
       "last_name": "Johnson",
       "age": 20,
       "phone_number": "0612345003",
-      "address": "131 Rue Principale, 75001 Paris"
+      "address": "131 Rue Principale, 75001 Paris",
+      "password": "Pass9876"
     },
     {
       "first_name": "Sophie",
       "last_name": "Brown",
       "age": 23,
       "phone_number": "0612345004",
-      "address": "123 Rue Principale, 75001 Paris"
+      "address": "123 Rue Principale, 75001 Paris",
+      "password": "Pass5432"
     },
     {
       "first_name": "Emma",
       "last_name": "Wilson",
       "age": 28,
       "phone_number": "0612345005",
-      "address": "826 Route de la Forêt, 31000 Toulouse"
+      "address": "826 Route de la Forêt, 31000 Toulouse",
+      "password": "Pass2109"
     },
     {
       "first_name": "Daniel",
       "last_name": "Taylor",
       "age": 32,
       "phone_number": "0612345006",
-      "address": "789 Route de la Forêt, 31000 Toulouse"
+      "address": "789 Route de la Forêt, 31000 Toulouse",
+      "password": "Pass4567"
     },
     {
       "first_name": "Jane",
       "last_name": "Smith",
       "age": 28,
       "phone_number": "0612345007",
-      "address": "813 Route de la Forêt, 31000 Toulouse"
+      "address": "813 Route de la Forêt, 31000 Toulouse",
+      "password": "Pass7890"
     },
     {
       "first_name": "Michael",
       "last_name": "Johnson",
       "age": 35,
       "phone_number": "0612345008",
-      "address": "433 Avenue des Chênes, 69002 Lyon"
+      "address": "433 Avenue des Chênes, 69002 Lyon",
+      "password": "Pass0987"
     },
     {
       "first_name": "Liam",
       "last_name": "Smith",
       "age": 40,
       "phone_number": "0612345009",
-      "address": "386 Avenue des Chênes, 69002 Lyon"
+      "address": "386 Avenue des Chênes, 69002 Lyon",
+      "password": "Pass6543"
     },
     {
       "first_name": "Olivia",
       "last_name": "Johnson",
       "age": 45,
       "phone_number": "0612345010",
-      "address": "412 Avenue des Chênes, 69002 Lyon"
+      "address": "412 Avenue des Chênes, 69002 Lyon",
+      "password": "Pass1230"
     },
     {
       "first_name": "Ava",
       "last_name": "Wilson",
       "age": 65,
       "phone_number": "0612345011",
-      "address": "138 Chemin de l'Érable, 44000 Nantes"
+      "address": "138 Chemin de l'Érable, 44000 Nantes",
+      "password": "Pass5678"
     },
     {
       "first_name": "Lucas",
       "last_name": "Brown",
       "age": 50,
       "phone_number": "0612345012",
-      "address": "145 Chemin de l'Érable, 44000 Nantes"
+      "address": "145 Chemin de l'Érable, 44000 Nantes",
+      "password": "Pass9012"
     },
     {
       "first_name": "Sarah",
       "last_name": "Davis",
       "age": 27,
       "phone_number": "0612345013",
-      "address": "112 Chemin de l'Érable, 44000 Nantes"
+      "address": "112 Chemin de l'Érable, 44000 Nantes",
+      "password": "Pass3456"
     }
   ],
   "places": [
