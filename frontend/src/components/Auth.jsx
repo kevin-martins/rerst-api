@@ -69,9 +69,9 @@ const LogIn = ({ setIsLoading, setIsLogged }) => {
 
 const SignIn = ({ setIsLoading, setIsLogged }) => {
   const [data, setData] = useState({
-    phoneNumber: "",
-    password: "",
-    passwordConfirmation: ""
+    "phone_number": "",
+    "password": "",
+    "password_confirmation": ""
   })
 
   const handleSubmit = (e) => {
@@ -92,6 +92,15 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
       .catch((error) => console.log(error));
   }
 
+  const handleChange = (e) => {
+    setData(prev => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value
+      }
+    })
+  }
+
   return (
     <>
       <h1 className='text-xl text-center pb-3'>je créer mon compte</h1>
@@ -108,7 +117,7 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
             id="phone_number"
             name="phone_number"
             value={data.phoneNumber}
-            onChange={e => setData(prev => prev.phone_number = e.target.value)}
+            onChange={handleChange}
             className="w-full p-2 rounded text-black outline-none"
           />
         </div>
@@ -121,20 +130,20 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
             id="password"
             name="password"
             value={data.password}
-            onChange={e => setData(prev => prev.password = e.target.value)}
+            onChange={handleChange}
             className="w-full p-2 rounded text-black outline-none"
           />
         </div>
         <div>
-          <label htmlFor="password">
+          <label htmlFor="password_confirmation">
             Confirmez votre mot de passe
           </label>
           <input
             type="password"
-            id="password"
-            name="password"
+            id="password_confirmation"
+            name="password_confirmation"
             value={data.passwordConfirmation}
-            onChange={e => setData(prev => prev.passwordConfirmation = e.target.value)}
+            onChange={handleChange}
             className="w-full p-2 rounded text-black outline-none"
           />
         </div>
