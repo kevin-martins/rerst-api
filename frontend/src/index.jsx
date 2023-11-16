@@ -16,11 +16,13 @@ import Places from './pages/Places';
 import PlaceId from './pages/PlaceId';
 import UserAvailablePlaces from './pages/UserAvailablePlaces';
 import Error404 from './pages/Error404';
+import Auth from './components/Auth';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
+      <Route path='/home' element={<Home />} />
       <Route path="/users" element={<Users />} />
       <Route path="/places" element={<Places />} />
       <Route path="/places/:id" element={<PlaceId />} />
