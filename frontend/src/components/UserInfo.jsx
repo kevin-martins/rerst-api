@@ -27,7 +27,6 @@ const UserInfo = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        // setData({ ...res })
         console.log(res)
         setIsLoading(false)
       })
