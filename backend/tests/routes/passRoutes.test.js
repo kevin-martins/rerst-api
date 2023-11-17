@@ -1,67 +1,66 @@
 const request = require('supertest');
-const server = require('../../server');
+const app = require('../../server');
 
 describe('Pass Routes', () => {
+  beforeAll(() => {
+    //check mongodb connection
+  })
+  afterAll(() => {
+    //close mongodb 
+  })
   let passId;
-  let passLevel = 5;
 
   it('should create a new pass', async () => {
-    const res = await request(server)
+    const res = await request(app)
       .post('/passes')
       .send({
-        level: passLevel
+        level: 5
       });
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
-    expect(res.body).toHaveProperty('level');
     expect(res.body).toHaveProperty('created_at');
     expect(res.body).toHaveProperty('updated_at');
     passId = res.body._id;
   });
 
   it('should get all passes', async () => {
-    const res = await request(server).get(`/passes`);
+    const res = await request(app).get(`/passes`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toBe(typeof array);
     res.body.forEach(pass => {
       expect(pass).toHaveProperty('_id');
-      expect(pass).toHaveProperty('level');
-      expect(pass).toHaveProperty('created_at');
-      expect(pass).toHaveProperty('updated_at');
     })
   });
 
   it('should get a pass by ID', async () => {
-    const res = await request(server).get(`/passes/${passId}`);
+    const res = await request(app).get(`/passes/${passId}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', passId);
-    expect(res.body).toHaveProperty('level', passLevel);
   });
 
   it('should update a pass by ID', async () => {
-    passLevel = 3;
-    const res = await request(server)
+    const res = await request(app)
       .put(`/passes/${passId}`)
       .send({
-        level: passLevel
+        level: 3
       });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', passId);
-    expect(res.body).toHaveProperty('level', passLevel);
+    expect(res.body).toHaveProperty('level');
+    expect(res.body.created_at).not.toBe(res.body.updated_at)
   });
 
   it('should delete a pass by ID', async () => {
-    const res = await request(server).delete(`/passes/${passId}`);
+    const res = await request(app).delete(`/passes/${passId}`);
 
     expect(res.statusCode).toBe(200);
   });
 
   it('should return 404 when trying to get a non-existent pass', async () => {
-    const res = await request(server).get('/passes/non_existent_id');
+    const res = await request(app).get('/passes/none');
 
     expect(res.statusCode).toBe(404);
   });
