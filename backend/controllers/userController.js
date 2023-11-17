@@ -167,18 +167,12 @@
  */
 
 const { User, Pass, Place } = require('../models');
+const createUser = require('../helpers/createUser');
+const bcrypt = require('bcrypt');
 
 exports.createUser = async (req, res) => {
   try {
-    const pass = await Pass.create({ level: 1 });
-    if (!pass) {
-      return res.status(404).json({ message: 'Error: pass has not successfully been created' });
-    }
-
-    const user = await User.create({
-      ...req.body,
-      pass_id: pass._id
-    });
+    const user = await createUser(req.body);
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been created' });
     }
@@ -191,7 +185,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).select('-password');
     if (!users) {
       return res.status(404).json({ message: 'Error: users has not successfully been found' });
     }
@@ -204,7 +198,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
@@ -217,7 +211,8 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
+    const { password, ...otherData } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true });
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }

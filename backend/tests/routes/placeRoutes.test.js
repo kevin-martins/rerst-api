@@ -1,54 +1,62 @@
 const request = require('supertest');
-const server = require('../../server');
+const app = require('../../server');
 
-describe('User Routes', () => {
-  let userId; // Assuming you will get this ID after creating a user
+describe('Place Routes', () => {
+  let placeId;
 
-  it('should create a new user', async () => {
-    const res = await request(server)
-      .post('/users')
+  it('should create a new place', async () => {
+    const res = await request(app)
+      .post('/places')
       .send({
-        first_name: 'Homer',
-        last_name: 'Simpson',
-        age: 30,
-        phone_number: '0688551136',
-        address: '123 Main St'
+        address: "843 Chemin des Taupes, 44000 Nantes",
+        phone_number: "0798765435",
+        required_pass_level: 5,
+        required_age_level: 47
       });
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
-    userId = res.body._id;
+    placeId = res.body._id;
   });
 
-  it('should get a user by ID', async () => {
-    const res = await request(server).get(`/users/${userId}`);
+  it('should get all places', async () => {
+    const res = await request(app).get(`/places`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('_id', userId);
+    res.body.forEach(place => {
+      expect(place).toHaveProperty('_id');
+    })
   });
 
-  it('should update a user by ID', async () => {
-    const res = await request(server)
-      .put(`/users/${userId}`)
+  it('should get a place by ID', async () => {
+    const res = await request(app).get(`/places/${placeId}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('_id', placeId);
+  });
+
+  it('should update a place by ID', async () => {
+    const res = await request(app)
+      .put(`/places/${placeId}`)
       .send({
-        first_name: 'Moe',
-        last_name: 'Szyslak'
+        required_pass_level: 1,
+        required_age_level: 35
       });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('_id', userId);
-    expect(res.body).toHaveProperty('first_name', 'Moe');
-    expect(res.body).toHaveProperty('last_name', 'Szyslak');
+    expect(res.body).toHaveProperty('_id', placeId);
+    expect(res.body).toHaveProperty('required_pass_level', 1);
+    expect(res.body).toHaveProperty('required_age_level', 35);
   });
 
-  it('should delete a user by ID', async () => {
-    const res = await request(server).delete(`/users/${userId}`);
+  it('should delete a place by ID', async () => {
+    const res = await request(app).delete(`/places/${placeId}`);
 
-    expect(res.statusCode).toBe(204);
+    expect(res.statusCode).toBe(200);
   });
 
-  it('should return 404 when trying to get a non-existent user', async () => {
-    const res = await request(server).get('/users/nonexistent_id');
+  it('should return 404 when trying to get a non-existent place', async () => {
+    const res = await request(app).get('/places/none');
 
     expect(res.statusCode).toBe(404);
   });
