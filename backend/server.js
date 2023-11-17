@@ -4,7 +4,6 @@ const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsdoc = require("swagger-jsdoc");
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const { auth } = require('./routes/middleware');
 
 const app = express();
@@ -25,9 +24,10 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-// app.use("/", auth);
+const authRoutes = require('./routes/authRoutes');
+app.use(authRoutes);
 
 const userRoutes = require('./routes/userRoutes');
 app.use(userRoutes);
@@ -48,7 +48,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:8080",
       },
     ],
   },
