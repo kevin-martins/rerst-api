@@ -3,18 +3,20 @@ import Loading from '../components/Loading';
 import Card from '../components/Card';
 
 const Places = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [places, setPlaces] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [places, setPlaces] = useState([]);
+
   useEffect(() => {
     fetch('http://localhost:8080/places')
       .then((res) => res.json())
       .then((res) => {
         console.log(res)
         setPlaces(res);
-        setIsLoading(false)
+        setIsLoading(false);
       })
       .catch((error) => console.log(error));
   })
+
   return (
     <>
       {isLoading
