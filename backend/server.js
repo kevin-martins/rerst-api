@@ -11,12 +11,12 @@ const PORT = process.env.PORT || 8080;
 
 mongoose.connect(process.env.MONGO_URI);
 
-mongoose.connection.on("error", err => {
-  console.log("Error: ", err)
-})
-mongoose.connection.on("connected", (err, res) => {
-  console.log("Mongoose is connected")
-})
+// mongoose.connection.on("error", err => {
+//   console.log("Error: ", err)
+// })
+// mongoose.connection.on("connected", (err, res) => {
+//   console.log("Mongoose is connected")
+// })
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -49,7 +49,7 @@ const options = {
     servers: [
       {
         url: "http://localhost:8080",
-      },
+      }
     ],
   },
   apis: ["./routes/*.js", "./controllers/*.js"],
@@ -62,8 +62,8 @@ app.use(
   swaggerUI.setup(specs, { explorer: true })
 );
 
-app.post('/')
-
 app.listen(PORT, () => {
   console.log(`server starts on port => ${PORT}`);
 });
+
+module.exports = app;
