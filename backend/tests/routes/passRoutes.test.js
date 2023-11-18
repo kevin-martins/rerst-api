@@ -1,17 +1,35 @@
 const request = require('supertest');
-const app = require('../../server');
+const express = require('express');
+const { databaseConnection, databaseDisconnection } = require('../../helpers/databaseConnection');
+let runningServer;
+let server;
 
 describe('Pass Routes', () => {
-  beforeAll(() => {
-    //check mongodb connection
-  })
-  afterAll(() => {
-    //close mongodb 
-  })
+  beforeAll(async () => {
+    Promise.all(
+      [await databaseConnection('test')]
+    )
+      .then(async () => {
+        const app = express();
+        app.use(express.json());
+        const passRoutes = require('../../routes/passRoutes');
+        app.use(passRoutes);
+        runningServer = app.listen(8080, async () => {
+          console.log(`server starts on port => 8080`);
+        });
+        server = await request(app);
+      })
+  });
+  
+  afterAll(async () => {
+    await databaseDisconnection();
+    await runningServer.close();
+  });
+
   let passId;
 
   it('should create a new pass', async () => {
-    const res = await request(app)
+    const res = await server
       .post('/passes')
       .send({
         level: 5
@@ -22,10 +40,21 @@ describe('Pass Routes', () => {
     expect(res.body).toHaveProperty('created_at');
     expect(res.body).toHaveProperty('updated_at');
     passId = res.body._id;
+    expect(passId).toBeDefined();
+  });
+
+  it('should not create a new pass', async () => {
+    const res = await Promise.all([
+      server.post('/passes').send({ level: 6 }),
+      server.post('/passes').send({ level: 0 }),
+    ]);
+
+    res.forEach(pass => expect(pass.statusCode).toBe(400));
+    // expect(res.statusCode).toBe(400);
   });
 
   it('should get all passes', async () => {
-    const res = await request(app).get(`/passes`);
+    const res = await server.get(`/passes`);
 
     expect(res.statusCode).toBe(200);
     res.body.forEach(pass => {
@@ -34,14 +63,14 @@ describe('Pass Routes', () => {
   });
 
   it('should get a pass by ID', async () => {
-    const res = await request(app).get(`/passes/${passId}`);
+    const res = await server.get(`/passes/${passId}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', passId);
   });
 
   it('should update a pass by ID', async () => {
-    const res = await request(app)
+    const res = await server
       .put(`/passes/${passId}`)
       .send({
         level: 3
@@ -50,18 +79,32 @@ describe('Pass Routes', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', passId);
     expect(res.body).toHaveProperty('level');
-    expect(res.body.created_at).not.toBe(res.body.updated_at)
+    expect(res.body.created_at).not.toBe(res.body.updated_at);
+  });
+
+  it('should not update a pass by ID', async () => {
+    const res = await server
+      .put(`/passes/${passId}`)
+      .send({
+        level: 30
+      });
+
+    expect(res.statusCode).toBe(400);
   });
 
   it('should delete a pass by ID', async () => {
-    const res = await request(app).delete(`/passes/${passId}`);
+    const res = await server.delete(`/passes/${passId}`);
 
     expect(res.statusCode).toBe(200);
   });
 
-  it('should return 404 when trying to get a non-existent pass', async () => {
-    const res = await request(app).get('/passes/none');
+  it('should return 404 when trying to get, update or delete a non-existent pass', async () => {
+    const res = await Promise.all([
+      await server.get('/passes/none'),
+      await server.put('/passes/none'),
+      await server.delete('/passes/none'),
+    ]);
 
-    expect(res.statusCode).toBe(404);
+    res.forEach(pass => expect(pass.statusCode).toBe(404));
   });
 });
