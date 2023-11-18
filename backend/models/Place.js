@@ -6,8 +6,14 @@ const placeSchema = new mongoose.Schema({
     type: String,
     unique: true
   },
-  required_pass_level: Number,
-  required_age_level: Number
+  required_pass_level: {
+    type: Number,
+    required: [true, "Error: pass level is required"],
+  },
+  required_age_level: {
+    type: Number,
+    required: [true, "Error: age level is required"],
+  },
 });
 
 const Place = mongoose.model('Place', placeSchema);
