@@ -27,16 +27,17 @@ describe('Place Routes', () => {
   });
 
   let placeId;
+  const placeMock = {
+    address: "843 Chemin des Taupes, 44000 Nantes",
+    phone_number: "0798765435",
+    required_pass_level: 5,
+    required_age_level: 47
+  }
 
   it('should create a new place', async () => {
     const res = await server
       .post('/places')
-      .send({
-        address: "843 Chemin des Taupes, 44000 Nantes",
-        phone_number: "0798765435",
-        required_pass_level: 5,
-        required_age_level: 47
-      });
+      .send(placeMock);
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
@@ -47,10 +48,8 @@ describe('Place Routes', () => {
     const res = await server
       .post('/places')
       .send({
-        address: "843 Chemin des Taupes, 44000 Nantes",
-        phone_number: "0798765435",
+        ...placeMock,
         required_pass_level: 6,
-        required_age_level: 47
       });
 
     expect(res.statusCode).toBe(400);
@@ -76,6 +75,7 @@ describe('Place Routes', () => {
     const res = await server
       .put(`/places/${placeId}`)
       .send({
+        ...placeMock,
         required_pass_level: 1,
         required_age_level: 35
       });
@@ -90,8 +90,8 @@ describe('Place Routes', () => {
     const res = await server
       .put(`/places/${placeId}`)
       .send({
+        ...placeMock,
         required_pass_level: 0,
-        required_age_level: 35
       });
 
     expect(res.statusCode).toBe(400);
