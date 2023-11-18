@@ -1,10 +1,10 @@
-const { isPassLevelValid, isPlaceAccessValid } = require("../helpers/verificators");
+const { isLevelValid, isPlaceAccessValid } = require("../helpers/verificators");
 
 describe('Check Validators', () => {
   it('should return true if level between 1 and 5 included', async () => {
     const values = [1, 2, 3, 4, 5];
     values.forEach(value => {
-      expect(isPassLevelValid({ level: value })).toBe(true);
+      expect(isLevelValid({ level: value })).toBe(true);
     });
   });
 
@@ -12,11 +12,11 @@ describe('Check Validators', () => {
     const [min, max] = [6, 10000];
     Array.from({ length: 5 }).forEach(() => {
       const random = Math.floor(Math.random() * (max - min + 1) + min)
-      expect(isPassLevelValid({ level: random })).toBe(false);
+      expect(isLevelValid({ level: random })).toBe(false);
     });
     Array.from({ length: 5 }).forEach(() => {
       const random = -Math.floor(Math.random() * (max - min + 1) + min)
-      expect(isPassLevelValid({ level: random })).toBe(false);
+      expect(isLevelValid({ level: random })).toBe(false);
     });
   });
 
