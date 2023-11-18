@@ -8,7 +8,7 @@ const isPassLevelValid = (body) => {
 
 const isPlaceAccessValid = (body) => {
   const { userAge, placeAge, passLevel, placeLevel } = body;
-  if (userAge < placeAge && passLevel < placeLevel) {
+  if (userAge < placeAge || passLevel < placeLevel) {
     return false;
   }
   return true;
