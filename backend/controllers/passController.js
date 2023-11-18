@@ -112,7 +112,7 @@
  *         description: Some server error
  */
 
-const { isPassLevelValid } = require('../helpers/verificators');
+const { isPassLevelValid } = require('../helpers/validator');
 const { Pass } = require('../models');
 
 exports.createPass = async (req, res) => {
