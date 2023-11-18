@@ -1,4 +1,4 @@
-const { User, Pass, Place } = require('../models');
+const { User, Pass } = require('../models');
 const bcrypt = require('bcrypt');
 
 const createUser = async (body) => {
