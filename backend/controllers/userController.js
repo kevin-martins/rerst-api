@@ -205,6 +205,10 @@ exports.getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -219,6 +223,10 @@ exports.updateUser = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: user has not successfully been updated' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -232,6 +240,10 @@ exports.deleteUser = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -259,6 +271,10 @@ exports.checkPlaceAccess = async (req, res) => {
       return res.status(403).json({ message: 'Error: you are not unauthorized to access this page' })
     }
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -285,6 +301,10 @@ exports.getPlacesByUserId = async (req, res) => {
 
     res.status(200).json(places);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
