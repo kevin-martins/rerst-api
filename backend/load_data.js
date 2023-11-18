@@ -7,12 +7,6 @@ mongoose.connect(process.env.MONGO_URI);
 
 const data = require('./data.json');
 
-const convertUserForDB = (user, pass) => {
-  const data = {
-    ...user,
-  }
-}
-
 async function loadUsers() {
   try {
     const existingUsers = await User.find({});
