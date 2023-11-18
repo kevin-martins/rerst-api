@@ -169,7 +169,7 @@
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
 const bcrypt = require('bcrypt');
-const { isPlaceAccessValid } = require('../helpers/verificators');
+const { isPlaceAccessValid } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
   try {
@@ -266,7 +266,13 @@ exports.checkPlaceAccess = async (req, res) => {
       return res.status(404).json({ message: 'Error: place has not successfully been found' });
     }
 
-    if (!isPlaceAccessValid(req.body)) {
+    const data = {
+      userAge: user.age,
+      placeAge: place.required_age_level,
+      passLevel: pass.level,
+      placeLevel: place.required_pass_level
+    }
+    if (!isPlaceAccessValid(data)) {
       return res.status(403).json({ message: 'Error: place not authorized' })
     }
 
