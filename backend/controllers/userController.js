@@ -169,10 +169,11 @@
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
 const bcrypt = require('bcrypt');
+const { isPlaceAccessValid } = require('../helpers/verificators');
 
 exports.createUser = async (req, res) => {
   try {
-    const user = await createUser(req.body);
+    const user = await createUser(req.body).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been created' });
     }
@@ -206,7 +207,7 @@ exports.getUserById = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     }
 
     res.status(500).json({ error: err.message });
@@ -224,7 +225,7 @@ exports.updateUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: user has not successfully been updated' });
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     }
 
     res.status(500).json({ error: err.message });
@@ -233,7 +234,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.userId);
+    const user = await User.findByIdAndDelete(req.params.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
     }
@@ -241,7 +242,7 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     }
 
     res.status(500).json({ error: err.message });
@@ -265,14 +266,14 @@ exports.checkPlaceAccess = async (req, res) => {
       return res.status(404).json({ message: 'Error: place has not successfully been found' });
     }
 
-    if (user.age >= place.required_age_level && pass.level >= place.required_pass_level) {
-      return res.status(200).json(place);
-    } else {
-      return res.status(403).json({ message: 'Error: you are not unauthorized to access this page' })
+    if (!isPlaceAccessValid(req.body)) {
+      return res.status(403).json({ message: 'Error: place not authorized' })
     }
+
+    res.status(200).json(place);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     }
 
     res.status(500).json({ error: err.message });
@@ -281,7 +282,7 @@ exports.checkPlaceAccess = async (req, res) => {
 
 exports.getPlacesByUserId = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
@@ -302,7 +303,7 @@ exports.getPlacesByUserId = async (req, res) => {
     res.status(200).json(places);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: user has not successfully been found' });
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     }
 
     res.status(500).json({ error: err.message });
