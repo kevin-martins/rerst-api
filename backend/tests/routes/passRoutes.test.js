@@ -79,7 +79,7 @@ describe('Pass Routes', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', passId);
     expect(res.body).toHaveProperty('level');
-    expect(res.body.created_at).not.toBe(res.body.updated_at);
+    expect(res.body.created_at).not.toEqual(res.body.updated_at);
   });
 
   it('should not update a pass by ID', async () => {
