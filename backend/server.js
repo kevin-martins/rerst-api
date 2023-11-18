@@ -3,21 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsdoc = require("swagger-jsdoc");
-const mongoose = require('mongoose');
 const { auth } = require('./routes/middleware');
-const databaseConnection = require('./helpers/databaseConnection')
+const { databaseConnection } = require('./helpers/databaseConnection')
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-
-// mongoose.connect(process.env.MONGO_URI);
-
-// mongoose.connection.on("error", err => {
-//   console.log("Error: ", err)
-// })
-// mongoose.connection.on("connected", (err, res) => {
-//   console.log("Mongoose is connected")
-// })
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -72,4 +62,3 @@ databaseConnection('devlopment')
     });
   });
 
-module.exports = { app, mongoose };
