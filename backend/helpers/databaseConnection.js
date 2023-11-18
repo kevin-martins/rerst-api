@@ -1,10 +1,10 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const databaseConnection = async (collection) => {
+const databaseConnection = async (databaseName) => {
   try {
-    await mongoose.connect(`${process.env.MONGO_URI}/${collection}`);
-    console.log("Mongoose is connected to: ", collection);
+    await mongoose.connect(`${process.env.MONGO_URI}/${databaseName}`);
+    console.log("Mongoose is connected to:", databaseName);
   } catch (err) {
     console.log(err.message);
   }
