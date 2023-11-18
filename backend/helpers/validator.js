@@ -1,13 +1,11 @@
-const isPassLevelValid = (body) => {
-  const { level } = body;
+const isLevelValid = (level) => {
   if (level > 5 || level < 1) {
     return false;
   }
   return true;
 }
 
-const isPlaceAccessValid = (body) => {
-  const { userAge, placeAge, passLevel, placeLevel } = body;
+const isPlaceAccessValid = (userAge, placeAge, passLevel, placeLevel) => {
   if (userAge < placeAge || passLevel < placeLevel) {
     return false;
   }
@@ -15,6 +13,6 @@ const isPlaceAccessValid = (body) => {
 }
 
 module.exports = {
-  isPassLevelValid,
+  isLevelValid,
   isPlaceAccessValid
 }
