@@ -149,6 +149,10 @@ exports.getPlaceById = async (req, res) => {
 
     res.status(200).json(place);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this place does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -162,6 +166,10 @@ exports.updatePlace = async (req, res) => {
 
     res.status(200).json(place);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this place does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -175,6 +183,10 @@ exports.deletePlace = async (req, res) => {
 
     res.status(200).json(place);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this place does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
