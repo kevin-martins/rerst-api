@@ -50,7 +50,6 @@ describe('Pass Routes', () => {
     ]);
 
     res.forEach(pass => expect(pass.statusCode).toBe(400));
-    // expect(res.statusCode).toBe(400);
   });
 
   it('should get all passes', async () => {
