@@ -112,10 +112,15 @@
  *         description: Some server error
  */
 
+const { isPassLevelValid } = require('../helpers/verificators');
 const { Place } = require('../models');
 
 exports.createPlace = async (req, res) => {
   try {
+    if (!isPassLevelValid(req.body)) {
+      return res.status(400).json({ message: 'Error: place level beyond boundaries' });
+    }
+
     const place = await Place.create(req.body);
     if (!place) {
       return res.status(404).json({ message: 'Error: place has not successfully been created' });
@@ -159,6 +164,10 @@ exports.getPlaceById = async (req, res) => {
 
 exports.updatePlace = async (req, res) => {
   try {
+    if (!isPassLevelValid(req.body)) {
+      return res.status(400).json({ message: 'Error: place level beyond boundaries' });
+    }
+
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
     if (!place) {
       return res.status(404).json({ message: 'Error: place has not successfully been updated' });
