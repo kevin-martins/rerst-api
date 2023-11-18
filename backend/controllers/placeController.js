@@ -112,12 +112,12 @@
  *         description: Some server error
  */
 
-const { isPassLevelValid } = require('../helpers/validator');
+const { isLevelValid } = require('../helpers/validator');
 const { Place } = require('../models');
 
 exports.createPlace = async (req, res) => {
   try {
-    if (!isPassLevelValid(req.body)) {
+    if (!isLevelValid(req.body.required_pass_level)) {
       return res.status(400).json({ message: 'Error: place level beyond boundaries' });
     }
 
@@ -164,7 +164,7 @@ exports.getPlaceById = async (req, res) => {
 
 exports.updatePlace = async (req, res) => {
   try {
-    if (!isPassLevelValid(req.body)) {
+    if (!isLevelValid(req.body.required_pass_level)) {
       return res.status(400).json({ message: 'Error: place level beyond boundaries' });
     }
 

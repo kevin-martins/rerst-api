@@ -173,13 +173,16 @@ const { isPlaceAccessValid } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
   try {
-    const user = await createUser(req.body).select('-password');
+    const user = await createUser(req.body);
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been created' });
     }
 
+    delete user._doc.password;
+
     res.status(201).json(user);
   } catch (err) {
+    console.log(err.message)
     res.status(500).json({ error: err.message });
   }
 }
@@ -204,6 +207,8 @@ exports.getUserById = async (req, res) => {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
+    delete user._doc.password;
+
     res.status(200).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
@@ -217,7 +222,7 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { password, ...otherData } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true });
+    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true }).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }
@@ -266,13 +271,7 @@ exports.checkPlaceAccess = async (req, res) => {
       return res.status(404).json({ message: 'Error: place has not successfully been found' });
     }
 
-    const data = {
-      userAge: user.age,
-      placeAge: place.required_age_level,
-      passLevel: pass.level,
-      placeLevel: place.required_pass_level
-    }
-    if (!isPlaceAccessValid(data)) {
+    if (!isPlaceAccessValid(user.age, place.required_age_level, pass.level, place.required_pass_level)) {
       return res.status(403).json({ message: 'Error: place not authorized' })
     }
 
@@ -288,7 +287,7 @@ exports.checkPlaceAccess = async (req, res) => {
 
 exports.getPlacesByUserId = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select('-password');
+    const user = await User.findById(req.params.userId);
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
