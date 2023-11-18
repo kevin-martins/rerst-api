@@ -116,7 +116,12 @@ const { Pass } = require('../models');
 
 exports.createPass = async (req, res) => {
   try {
-    const pass = await Pass.create(req.body);
+    const { level } = req.body;
+    if (level > 5 || level < 1) {
+      return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
+    }
+
+    const pass = await Pass.create({ level });
     if (!pass) {
       return res.status(404).json({ message: 'Error: pass has not successfully been created' });
     }
@@ -143,12 +148,17 @@ exports.getAllPasses = async (req, res) => {
 exports.getPassById = async (req, res) => {
   try {
     const pass = await Pass.findById(req.params.passId);
+    console.log(pass)
     if (!pass) {
       return res.status(404).json({ message: 'Error: pass has not successfully been found' });
     }
 
     res.status(200).json(pass);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -157,6 +167,7 @@ exports.updatePass = async (req, res) => {
   try {
     const { level } = req.body;
     if (level > 5 || level < 1) {
+      console.log('error')
       return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
     }
 
