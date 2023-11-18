@@ -7,7 +7,7 @@ let server;
 describe('Pass Routes', () => {
   beforeAll(async () => {
     Promise.all(
-      [await databaseConnection('test')]
+      [await databaseConnection('tests')]
     )
       .then(async () => {
         const app = express();
