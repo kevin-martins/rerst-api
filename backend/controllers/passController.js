@@ -186,7 +186,7 @@ exports.updatePass = async (req, res) => {
     res.status(200).json(pass);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been updated' });
     }
 
     res.status(500).json({ error: err.message });
@@ -203,7 +203,7 @@ exports.deletePass = async (req, res) => {
     res.status(200).json(pass);
   } catch (err) {
     if (err.name === 'CastError') {
-      return res.status(404).json({ message: 'Error: pass has not successfully been found' });
+      return res.status(404).json({ message: 'Error: pass has not successfully been deleted' });
     }
 
     res.status(500).json({ error: err.message });
