@@ -12,7 +12,15 @@ const isPlaceAccessValid = (userAge, placeAge, passLevel, placeLevel) => {
   return true;
 }
 
+const isAgeValid = (age) => {
+  if (age > 150 || age < 18) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   isLevelValid,
-  isPlaceAccessValid
+  isPlaceAccessValid,
+  isAgeValid
 }

@@ -112,13 +112,17 @@
  *         description: Some server error
  */
 
-const { isLevelValid } = require('../helpers/validator');
+const { isLevelValid, isAgeValid } = require('../helpers/validator');
 const { Place } = require('../models');
 
 exports.createPlace = async (req, res) => {
   try {
     if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(400).json({ message: 'Error: place level beyond boundaries' });
+      return res.status(400).json({ message: 'Error: level beyond boundaries' });
+    }
+
+    if (!isAgeValid(req.body.required_age_level)) {
+      return res.status(400).json({ message: 'Error: age beyond boundaries' });
     }
 
     const place = await Place.create(req.body);
@@ -165,7 +169,11 @@ exports.getPlaceById = async (req, res) => {
 exports.updatePlace = async (req, res) => {
   try {
     if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(400).json({ message: 'Error: place level beyond boundaries' });
+      return res.status(400).json({ message: 'Error: level beyond boundaries' });
+    }
+
+    if (!isAgeValid(req.body.required_age_level)) {
+      return res.status(400).json({ message: 'Error: age beyond boundaries' });
     }
 
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
