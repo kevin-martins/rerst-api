@@ -136,6 +136,10 @@ exports.createPlace = async (req, res) => {
 
     res.status(201).json(place);
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -189,8 +193,8 @@ exports.updatePlace = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this place does not exist' });
-    } else if (err.message.includes('duplicate key error')) {
-      return res.status(400).json({ message: 'Error: duplicate key found' });
+    } else if (err.code === 11000) {
+      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });

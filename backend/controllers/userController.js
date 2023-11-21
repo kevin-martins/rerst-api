@@ -168,7 +168,6 @@
 
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
-const bcrypt = require('bcrypt');
 const { isPlaceAccessValid, isObjectKeysDefined } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
@@ -178,16 +177,16 @@ exports.createUser = async (req, res) => {
     }
 
     const user = await createUser(req.body);
-    if (!user) {
-      return res.status(404).json({ message: 'Error: user has not successfully been created' });
+    if (user?.error) {
+      return res.status(404).json({ message: user.error });
     }
 
     delete user._doc.password;
 
     res.status(201).json(user);
   } catch (err) {
-    if (err.message.includes('duplicate key error')) {
-      return res.status(400).json({ message: 'Error: duplicate key found' });
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
@@ -238,8 +237,8 @@ exports.updateUser = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this user does not exist' });
-    } else if (err.message.includes('duplicate key error')) {
-      return res.status(400).json({ message: 'Error: duplicate key found' });
+    } else if (err.code === 11000) {
+      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
