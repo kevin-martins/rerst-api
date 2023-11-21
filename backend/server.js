@@ -29,33 +29,33 @@ app.use(passRoutes);
 const placeRoutes = require('./routes/placeRoutes');
 app.use(placeRoutes);
 
-// app.use((req, res) => res.status(404).send('Route not found'));
+app.use((req, res) => res.status(404).send('Route not found'));
 
-// const options = {
-//   definition: {
-//     openapi: "3.0.0",
-//     info: {
-//       title: "Rest API",
-//       version: "1.0.0",
-//       description: "This is a simple CRUD API application made with Express and documented with Swagger",
-//     },
-//     servers: [
-//       {
-//         url: "http://localhost:8080",
-//       }
-//     ],
-//   },
-//   apis: ["./routes/*.js", "./controllers/*.js"],
-// };
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Rest API",
+      version: "1.0.0",
+      description: "This is a simple CRUD API application made with Express and documented with Swagger",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080",
+      }
+    ],
+  },
+  apis: ["./routes/*.js", "./controllers/*.js"],
+};
 
-// const specs = swaggerJsdoc(options);
-// app.use(
-//   "/api-docs",
-//   swaggerUI.serve,
-//   swaggerUI.setup(specs, { explorer: true })
-// );
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(specs, { explorer: true })
+);
 
-databaseConnection('devlopment')
+databaseConnection('tests')
   .then(() => {
     app.listen(PORT, async () => {
       console.log(`server starts on port => ${PORT}`);
