@@ -19,8 +19,18 @@ const isAgeValid = (age) => {
   return true;
 }
 
+const isObjectKeysDefined = (obj, keys) => {
+  for (const key of keys) {
+    if (!(key in obj) || obj[key] == null) {
+      return false;
+    }
+  }
+  return true;
+}
+
 module.exports = {
   isLevelValid,
   isPlaceAccessValid,
-  isAgeValid
+  isAgeValid,
+  isObjectKeysDefined
 }

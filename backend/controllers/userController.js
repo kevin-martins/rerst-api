@@ -169,10 +169,14 @@
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
 const bcrypt = require('bcrypt');
-const { isPlaceAccessValid } = require('../helpers/validator');
+const { isPlaceAccessValid, isObjectKeysDefined } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
   try {
+    if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
+      return res.status(400).json({ message: 'Error: there is required fields missing' });
+    }
+
     const user = await createUser(req.body);
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been created' });
@@ -182,6 +186,10 @@ exports.createUser = async (req, res) => {
 
     res.status(201).json(user);
   } catch (err) {
+    if (err.message.includes('duplicate key error')) {
+      return res.status(400).json({ message: 'Error: duplicate key found' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -230,6 +238,8 @@ exports.updateUser = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    } else if (err.message.includes('duplicate key error')) {
+      return res.status(400).json({ message: 'Error: duplicate key found' });
     }
 
     res.status(500).json({ error: err.message });
@@ -241,6 +251,11 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByIdAndDelete(req.params.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
+    }
+
+    const pass = await Pass.findByIdAndDelete(user.pass_id);
+    if (!pass) {
+      return res.status(404).json({ message: 'Error: pass has not successfully been deleted' });
     }
 
     res.status(200).json(user);

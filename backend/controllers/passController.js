@@ -112,11 +112,15 @@
  *         description: Some server error
  */
 
-const { isLevelValid } = require('../helpers/validator');
+const { isLevelValid, isObjectKeysDefined } = require('../helpers/validator');
 const { Pass } = require('../models');
 
 exports.createPass = async (req, res) => {
   try {
+    if (!isObjectKeysDefined(req.body, ["level"])) {
+      return res.status(400).json({ message: 'Error: there is required fields missing' });
+    }
+
     if (!isLevelValid(req.body.level)) {
       return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
     }

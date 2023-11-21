@@ -112,11 +112,15 @@
  *         description: Some server error
  */
 
-const { isLevelValid, isAgeValid } = require('../helpers/validator');
+const { isLevelValid, isAgeValid, isObjectKeysDefined } = require('../helpers/validator');
 const { Place } = require('../models');
 
 exports.createPlace = async (req, res) => {
   try {
+    if (!isObjectKeysDefined(req.body, ["required_pass_level", "required_age_level"])) {
+      return res.status(400).json({ message: 'Error: there is required fields missing' });
+    }
+
     if (!isLevelValid(req.body.required_pass_level)) {
       return res.status(400).json({ message: 'Error: level beyond boundaries' });
     }
@@ -185,6 +189,8 @@ exports.updatePlace = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this place does not exist' });
+    } else if (err.message.includes('duplicate key error')) {
+      return res.status(400).json({ message: 'Error: duplicate key found' });
     }
 
     res.status(500).json({ error: err.message });
