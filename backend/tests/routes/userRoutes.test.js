@@ -1,22 +1,23 @@
 const axios = require('axios');
+const { faker } = require('@faker-js/faker');
 const { addLocalPath } = require('../../helpers/helpers');
 
 describe('User Routes', () => {
   let userId;
   let userPassId;
   const userMock = {
-    first_name: "Kevin",
-    last_name: "Martins",
-    age: 25,
-    phone_number: "0785793738",
-    address: "12 Rue de l'Eglise, 31000 Toulouse",
-    password: "secret"
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    age: faker.number.int({ min: 18, max: 150 }),
+    phone_number: faker.phone.number(),
+    password: faker.internet.password(),
+    address: faker.location.streetAddress(),
   };
   const placeMock = {
-    address: "431 Chemin des Lumière, 44000 Nantes",
-    phone_number: "0796715403",
-    required_pass_level: 4,
-    required_age_level: 20
+    address: faker.location.streetAddress(),
+    phone_number: faker.phone.number(),
+    required_pass_level: faker.number.int({ min: 1, max: 5 }),
+    required_age_level: faker.number.int({ min: 18, max: 150 }),
   };
 
   it('should create a new user and its pass', async () => {
