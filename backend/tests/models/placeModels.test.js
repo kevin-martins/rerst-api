@@ -16,16 +16,45 @@ describe("Place models", () => {
   });
 
   afterAll(async () => {
-    const res = await axios.delete(addLocalPath(`/places/${placeId}`));
+    await axios.delete(addLocalPath(`/places/${placeId}`));
   });
 
   it('should not create a new place if at least one required fields is null', async () => {
-    const invalidFields = ["required_pass_level", "required_age_level"];
-    invalidFields.forEach(async field => {
+    const validFields = ["required_pass_level", "required_age_level"];
+    validFields.forEach(async field => {
+      const data = { ...placeMock };
+      delete data[field];
+      const res = await axios.post(addLocalPath('/places'),
+        {
+          ...data,
+        }
+      ).catch(err => err.response);
+
+      expect(res.status).toBe(400);
+    });
+  });
+
+  it('should not create a new place if at least one required fields is null', async () => {
+    const validFields = ["required_pass_level", "required_age_level"];
+    validFields.forEach(async field => {
       const res = await axios.post(addLocalPath('/places'),
         {
           ...placeMock,
           [field]: null,
+        }
+      ).catch(err => err.response);
+
+      expect(res.status).toBe(400);
+    });
+  });
+
+  it('should not create a new place if at least one required fields is null', async () => {
+    const validFields = ["required_pass_level", "required_age_level"];
+    validFields.forEach(async field => {
+      const res = await axios.post(addLocalPath('/places'),
+        {
+          ...placeMock,
+          [field]: undefined,
         }
       ).catch(err => err.response);
 
@@ -57,27 +86,25 @@ describe("Place models", () => {
     });
   });
 
-  // it('should not create a new place if trying to duplicate unique keys', async () => {
-  //   const res1 = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
-  //   const res2 = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
+  it('should not create a new place if trying to duplicate unique keys', async () => {
+    const res = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
     
-  //   expect(res1.status).toBe(201);
-  //   expect(res2.status).toBe(400);
-  // });
+    expect(res.status).toBe(400);
+  });
 
-  // it('should not update a new place if trying to duplicate unique keys', async () => {
-  //   const create = await axios.post(addLocalPath('/places'), {
-  //     ...placeMock,
-  //     phone_number: faker.phone.number(),
-  //   });
-  //   expect(create.status).toBe(201);
+  it('should not update a new place if trying to duplicate unique keys', async () => {
+    const create = await axios.post(addLocalPath('/places'), {
+      ...placeMock,
+      phone_number: faker.phone.number(),
+    });
+    expect(create.status).toBe(201);
 
-  //   const update = await axios
-  //     .put(addLocalPath(`/places/${create.data._id}`), placeMock)
-  //     .catch(err => err.response);
-  //   expect(update.status).toBe(400);
+    const update = await axios
+      .put(addLocalPath(`/places/${create.data._id}`), placeMock)
+      .catch(err => err.response);
+    expect(update.status).toBe(400);
 
-  //   const remove = await axios.delete(addLocalPath(`/places/${create.data._id}`));
-  //   expect(remove.status).toBe(200);
-  // });
+    const remove = await axios.delete(addLocalPath(`/places/${create.data._id}`));
+    expect(remove.status).toBe(200);
+  });
 })

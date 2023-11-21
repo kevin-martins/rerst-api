@@ -19,10 +19,10 @@ describe("User models", () => {
   });
 
   afterAll(async () => {
-    const res = await axios.delete(addLocalPath(`/users/${userId}`));
+    axios.delete(addLocalPath(`/users/${userId}`));
   });
 
-  it('should not create a new user if at least one required fields is not defined', async () => {
+  it('should not create a new user if at least one required fields is non-existent', async () => {
     const validFields = ["last_name", "first_name", "age", "phone_number", "password"];
     validFields.forEach(async field => {
       const data = { ...userMock };
@@ -82,23 +82,25 @@ describe("User models", () => {
     });
   });
 
-  // it('should not create a new user if trying to duplicate a unique key', async () => {
-  //   const res = await axios.post(addLocalPath('/users'), userMock).catch(err => err.response);
+  it('should not create a new user if trying to duplicate a unique key', async () => {
+    const res = await axios.post(addLocalPath('/users'), userMock).catch(err => err.response);
 
-  //   expect(res.status).toBe(400);
-  // });
+    expect(res.status).toBe(400);
+  });
 
-  // it('should not update a user if trying to use the same unique key from someone else', async () => {
-  //   const create = await axios.post(addLocalPath('/users'), {
-  //     ...userMock,
-  //     phone_number: faker.phone.number(),
-  //   });
-  //   expect(create.status).toBe(201);
+  it('should not update a user if trying to use the same unique key from someone else', async () => {
+    const create = await axios.post(addLocalPath('/users'), {
+      ...userMock,
+      phone_number: faker.phone.number(),
+    });
+    expect(create.status).toBe(201);
 
-  //   const update = await axios.put(addLocalPath(`/users/${create.data._id}`), userMock).catch(err => err.response);
-  //   expect(update.status).toBe(400);
+    const update = await axios
+      .put(addLocalPath(`/users/${create.data._id}`), userMock)
+      .catch(err => err.response);
+    expect(update.status).toBe(400);
 
-  //   const remove = await axios.delete(addLocalPath(`/users/${create.data._id}`));
-  //   expect(remove.status).toBe(200);
-  // });
+    const remove = await axios.delete(addLocalPath(`/users/${create.data._id}`));
+    expect(remove.status).toBe(200);
+  });
 })
