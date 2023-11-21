@@ -3,17 +3,28 @@ const { faker } = require('@faker-js/faker');
 const { addLocalPath } = require('../../helpers/helpers');
 
 describe("Place models", () => {
-  const userMock = {
+  let placeId;
+  const placeMock = {
+    phone_number: faker.phone.number(),
     required_pass_level: faker.number.int({ min: 1, max: 5 }),
     required_age_level: faker.number.int({ min: 18, max: 150 }),
   };
+
+  beforeAll(async () => {
+    const res = await axios.post(addLocalPath('/places'), placeMock);
+    placeId = res.data._id;
+  });
+
+  afterAll(async () => {
+    const res = await axios.delete(addLocalPath(`/places/${placeId}`));
+  });
 
   it('should not create a new place if at least one required fields is null', async () => {
     const invalidFields = ["required_pass_level", "required_age_level"];
     invalidFields.forEach(async field => {
       const res = await axios.post(addLocalPath('/places'),
         {
-          ...userMock,
+          ...placeMock,
           [field]: null,
         }
       ).catch(err => err.response);
@@ -36,7 +47,7 @@ describe("Place models", () => {
       field.values.forEach(async value => {
         const res = await axios.post(addLocalPath('/places'),
           {
-            ...userMock,
+            ...placeMock,
             [field.name]: value,
           }
         ).catch(err => err.response);
@@ -45,4 +56,28 @@ describe("Place models", () => {
       })
     });
   });
+
+  // it('should not create a new place if trying to duplicate unique keys', async () => {
+  //   const res1 = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
+  //   const res2 = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
+    
+  //   expect(res1.status).toBe(201);
+  //   expect(res2.status).toBe(400);
+  // });
+
+  // it('should not update a new place if trying to duplicate unique keys', async () => {
+  //   const create = await axios.post(addLocalPath('/places'), {
+  //     ...placeMock,
+  //     phone_number: faker.phone.number(),
+  //   });
+  //   expect(create.status).toBe(201);
+
+  //   const update = await axios
+  //     .put(addLocalPath(`/places/${create.data._id}`), placeMock)
+  //     .catch(err => err.response);
+  //   expect(update.status).toBe(400);
+
+  //   const remove = await axios.delete(addLocalPath(`/places/${create.data._id}`));
+  //   expect(remove.status).toBe(200);
+  // });
 })
