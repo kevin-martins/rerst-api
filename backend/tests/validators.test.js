@@ -140,17 +140,4 @@ describe('Check Validators', () => {
       expect(isObjectKeysDefined(object, ["last_name", "first_name", "age"])).toBe(false);
     });
   });
-
-  // it('should return true if trying to duplicate a unique key', async () => {
-  //   const phoneNumber = faker.phone.number();
-  //   const data = [
-  //     {
-  //       phone_number: phoneNumber
-  //     }
-  //   ];
-  //   const obj = {
-  //     phone_number: phoneNumber,
-  //   }
-  //   expect(isObjectKeysUniques(data, obj, ["phone_number"])).toBe(true);
-  // });
 });
