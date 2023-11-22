@@ -19,7 +19,9 @@ const LogIn = ({ setIsLoading, setIsLogged }) => {
       .then((res) => {
         console.log('here', res)
         console.log(res.status)
-        setIsLogged(true);
+        if (res.status === 200) {
+          setIsLogged(true);
+        }
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -86,7 +88,9 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
     })
       .then((res) => {
         console.log(res.status)
-        setIsLogged(true);
+        if (res.status === 201) {
+          setIsLogged(true);
+        }
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -166,8 +170,8 @@ const Auth = ({ setIsLogged }) => {
         <ToggleSwitch setToggle={setToggle} />
 
         {toggle
-          ? <LogIn setIsLoading={setIsLoading} setIsLogged={setIsLogged} />
-          : <SignIn setIsLoading={setIsLoading} setIsLogged={setIsLogged} />
+          ? <SignIn setIsLoading={setIsLoading} setIsLogged={setIsLogged} />
+          : <LogIn setIsLoading={setIsLoading} setIsLogged={setIsLogged} />
         }
       </div>
     </div>
