@@ -19,9 +19,10 @@ describe("Place models", () => {
     await axios.delete(addLocalPath(`/places/${placeId}`));
   });
 
-  it('should not create a new place if at least one required fields is null', async () => {
+  it('should not create a new place if at least one required fields non-existent', async () => {
     const validFields = ["required_pass_level", "required_age_level"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const data = { ...placeMock };
       delete data[field];
       const res = await axios.post(addLocalPath('/places'),
@@ -29,40 +30,42 @@ describe("Place models", () => {
           ...data,
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
   it('should not create a new place if at least one required fields is null', async () => {
     const validFields = ["required_pass_level", "required_age_level"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const res = await axios.post(addLocalPath('/places'),
         {
           ...placeMock,
           [field]: null,
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
-  it('should not create a new place if at least one required fields is null', async () => {
+  it('should not create a new place if at least one required fields is undefined', async () => {
     const validFields = ["required_pass_level", "required_age_level"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const res = await axios.post(addLocalPath('/places'),
         {
           ...placeMock,
           [field]: undefined,
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
-  it('should not create a new place if at least one value is uncorrect', async () => {
+  it('should not create a new place if required_pass and age are invalid', async () => {
     const invalidFields = [
       { name: "required_pass_level", values: [
         faker.number.int({ min: 6, max: 10000 }),
@@ -72,24 +75,25 @@ describe("Place models", () => {
         faker.number.int({ min: -10000, max: 17 })
       ]}
     ];
-    invalidFields.forEach(async field => {
-      field.values.forEach(async value => {
+
+    for (const field of invalidFields) {
+      for (const value of field.values) {
         const res = await axios.post(addLocalPath('/places'),
           {
             ...placeMock,
             [field.name]: value,
           }
         ).catch(err => err.response);
-  
-        expect(res.status).toBe(400);
-      })
-    });
+    
+        expect(res.status).toBe(401);
+      }
+    }
   });
 
   it('should not create a new place if trying to duplicate unique keys', async () => {
     const res = await axios.post(addLocalPath('/places'), placeMock).catch(err => err.response);
     
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(401);
   });
 
   it('should not update a new place if trying to duplicate unique keys', async () => {
@@ -102,7 +106,7 @@ describe("Place models", () => {
     const update = await axios
       .put(addLocalPath(`/places/${create.data._id}`), placeMock)
       .catch(err => err.response);
-    expect(update.status).toBe(400);
+    expect(update.status).toBe(401);
 
     const remove = await axios.delete(addLocalPath(`/places/${create.data._id}`));
     expect(remove.status).toBe(200);

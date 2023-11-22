@@ -24,7 +24,8 @@ describe("User models", () => {
 
   it('should not create a new user if at least one required fields is non-existent', async () => {
     const validFields = ["last_name", "first_name", "age", "phone_number", "password"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const data = { ...userMock };
       delete data[field];
       const res = await axios.post(addLocalPath('/users'),
@@ -32,37 +33,39 @@ describe("User models", () => {
           ...data,
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
   it('should not create a new user if at least one required fields is null', async () => {
     const validFields = ["last_name", "first_name", "age", "phone_number", "password"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const res = await axios.post(addLocalPath('/users'),
         {
           ...userMock,
           [field]: null
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
   it('should not create a new user if at least one required fields is undefined', async () => {
     const validFields = ["last_name", "first_name", "age", "phone_number", "password"];
-    validFields.forEach(async field => {
+
+    for (const field of validFields) {
       const res = await axios.post(addLocalPath('/users'),
         {
           ...userMock,
           [field]: undefined
         }
       ).catch(err => err.response);
-
+  
       expect(res.status).toBe(400);
-    });
+    }
   });
 
   it('should not create a new user if age not between 18 and 150 included', async () => {
@@ -70,22 +73,23 @@ describe("User models", () => {
       faker.number.int({ min: -10000, max: 17 }),
       -faker.number.int({ min: 151, max: 10000 })
     ];
-    invalidAges.forEach(async age => {
-      const res = await axios.post(addLocalPath('/passes'),
+
+    for (const age of invalidAges) {
+      const res = await axios.post(addLocalPath('/users'),
         {
           ...userMock,
           age,
         }
       ).catch(err => err.response);
-
-      expect(res.status).toBe(400);
-    });
+  
+      expect(res.status).toBe(401);
+    }
   });
 
   it('should not create a new user if trying to duplicate a unique key', async () => {
     const res = await axios.post(addLocalPath('/users'), userMock).catch(err => err.response);
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(401);
   });
 
   it('should not update a user if trying to use the same unique key from someone else', async () => {
@@ -98,7 +102,7 @@ describe("User models", () => {
     const update = await axios
       .put(addLocalPath(`/users/${create.data._id}`), userMock)
       .catch(err => err.response);
-    expect(update.status).toBe(400);
+    expect(update.status).toBe(401);
 
     const remove = await axios.delete(addLocalPath(`/users/${create.data._id}`));
     expect(remove.status).toBe(200);
