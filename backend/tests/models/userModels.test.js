@@ -2,7 +2,7 @@ const axios = require('axios');
 const { faker } = require('@faker-js/faker');
 const { addLocalPath } = require('../../helpers/helpers');
 
-describe("User models", () => {
+describe("User Models", () => {
   let userId;
   const userMock = {
     first_name: faker.person.firstName(),
@@ -19,7 +19,7 @@ describe("User models", () => {
   });
 
   afterAll(async () => {
-    axios.delete(addLocalPath(`/users/${userId}`));
+    await axios.delete(addLocalPath(`/users/${userId}`));
   });
 
   it('should not create a new user if at least one required fields is non-existent', async () => {
@@ -68,7 +68,25 @@ describe("User models", () => {
     }
   });
 
-  it('should not create a new user if age not between 18 and 150 included', async () => {
+  it('should not create a new user if age out 18 and 150 included', async () => {
+    const invalidAges = [
+      faker.number.int({ min: -10000, max: 17 }),
+      -faker.number.int({ min: 151, max: 10000 })
+    ];
+
+    for (const age of invalidAges) {
+      const res = await axios.post(addLocalPath('/users'),
+        {
+          ...userMock,
+          age,
+        }
+      ).catch(err => err.response);
+  
+      expect(res.status).toBe(401);
+    }
+  });
+
+  it('should not update a new user if age out 18 and 150 included', async () => {
     const invalidAges = [
       faker.number.int({ min: -10000, max: 17 }),
       -faker.number.int({ min: 151, max: 10000 })
@@ -92,7 +110,7 @@ describe("User models", () => {
     expect(res.status).toBe(401);
   });
 
-  it('should not update a user if trying to use the same unique key from someone else', async () => {
+  it('should not update a user if trying to duplicate a unique key', async () => {
     const create = await axios.post(addLocalPath('/users'), {
       ...userMock,
       phone_number: faker.phone.number(),
