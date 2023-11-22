@@ -36,6 +36,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PassResponse'
+ *       400:
+ *         description: Some required parameters are missing in your request
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The pass has not been created
  *       500:
@@ -85,6 +89,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PassResponse'
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The pass has not been updated
  *       500:
@@ -122,7 +128,7 @@ exports.createPass = async (req, res) => {
     }
 
     if (!isLevelValid(req.body.level)) {
-      return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
+      return res.status(401).json({ message: 'Error: pass level beyond boundaries' });
     }
 
     const pass = await Pass.create(req.body);
@@ -169,7 +175,7 @@ exports.getPassById = async (req, res) => {
 exports.updatePass = async (req, res) => {
   try {
     if (!isLevelValid(req.body.level)) {
-      return res.status(400).json({ message: 'Error: pass level beyond boundaries' });
+      return res.status(401).json({ message: 'Error: pass level beyond boundaries' });
     }
 
     const pass = await Pass.findByIdAndUpdate(

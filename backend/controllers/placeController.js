@@ -36,6 +36,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PlaceResponse'
+ *       400:
+ *         description: Some required parameters are missing in your request
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The place has not been created
  *       500:
@@ -85,6 +89,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PlaceResponse'
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The place has not been updated
  *       500:
@@ -122,11 +128,11 @@ exports.createPlace = async (req, res) => {
     }
 
     if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(400).json({ message: 'Error: level beyond boundaries' });
+      return res.status(401).json({ message: 'Error: level beyond boundaries' });
     }
 
     if (!isAgeValid(req.body.required_age_level)) {
-      return res.status(400).json({ message: 'Error: age beyond boundaries' });
+      return res.status(401).json({ message: 'Error: age beyond boundaries' });
     }
 
     const place = await Place.create(req.body);
@@ -137,7 +143,7 @@ exports.createPlace = async (req, res) => {
     res.status(201).json(place);
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
@@ -177,11 +183,11 @@ exports.getPlaceById = async (req, res) => {
 exports.updatePlace = async (req, res) => {
   try {
     if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(400).json({ message: 'Error: level beyond boundaries' });
+      return res.status(401).json({ message: 'Error: level beyond boundaries' });
     }
 
     if (!isAgeValid(req.body.required_age_level)) {
-      return res.status(400).json({ message: 'Error: age beyond boundaries' });
+      return res.status(401).json({ message: 'Error: age beyond boundaries' });
     }
 
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
@@ -194,7 +200,7 @@ exports.updatePlace = async (req, res) => {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this place does not exist' });
     } else if (err.code === 11000) {
-      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
