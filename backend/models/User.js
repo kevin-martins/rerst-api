@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number,
+    min: [18, "Error: you should be over or equal 18 "],
+    max: [150, "Error: you can't be this old"],
     required: [true, "Error: age is required"],
   },
   phone_number: {

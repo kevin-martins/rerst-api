@@ -174,12 +174,16 @@
 
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
-const { isPlaceAccessValid, isObjectKeysDefined } = require('../helpers/validator');
+const { isPlaceAccessValid, isObjectKeysDefined, isAgeValid } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
   try {
     if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
       return res.status(400).json({ message: 'Error: there is required fields missing' });
+    }
+
+    if (!isAgeValid(req.body.age)) {
+      return res.status(401).json({ message: 'Error: age beyond boundaries' });
     }
 
     const user = await createUser(req.body);
