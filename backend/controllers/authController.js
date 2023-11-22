@@ -30,9 +30,10 @@
  *         description: The user has not been found
  *       500:
  *         description: Some server error
+ * /signin:
  *   post:
  *     summary: Create a new user
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -68,30 +69,25 @@ exports.logIn = async (req, res) => {
       return res.status(400).json({ message: 'Error: there is required fields missing' });
     }
 
-    const { phoneNumber, password } = req.body;
-    const user = await User.findOne({ phone_number: phoneNumber });
-
+    const { phone_number, password } = req.body;
+    const user = await User.findOne({ phone_number });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Error: invalid phone number or password' });
     }
 
     res.status(200).json(user);
   } catch (err) {
-    if (err.code === 11000) {
-      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
-    }
-
     res.status(500).json({ error: err.message });
   }
 }
 
 exports.signIn = async (req, res) => {
   try {
-    if (!isObjectKeysDefined(req.body, ["phone_number", "password"])) {
+    if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
       return res.status(400).json({ message: 'Error: there is required fields missing' });
     }
-    const { password, passwordConfirmation } = req.body;
-    if (password !== passwordConfirmation) {
+    const { password, password_confirmation } = req.body;
+    if (password !== password_confirmation) {
       return res.status(401).json({ message: 'Error: the passwords does not match' });
     }
 
