@@ -29,8 +29,6 @@ app.use(passRoutes);
 const placeRoutes = require('./routes/placeRoutes');
 app.use(placeRoutes);
 
-app.use((req, res) => res.status(404).send('Route not found'));
-
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -54,6 +52,8 @@ app.use(
   swaggerUI.serve,
   swaggerUI.setup(specs, { explorer: true })
 );
+
+app.use((req, res) => res.status(404).send('Route not found'));
 
 databaseConnection('tests')
   .then(() => {
