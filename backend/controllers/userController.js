@@ -36,6 +36,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UserResponse'
+ *       400:
+ *         description: Some required parameters are missing in your request
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The user has not been created
  *       500:
@@ -85,6 +89,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UserResponse'
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The user has not been updated
  *       500:
@@ -135,7 +141,7 @@
  *             schema:
  *               $ref: '#/components/schemas/PlaceResponse'
  *       403:
- *         description: The user has not been authorized
+ *         description: You are not authorized to access this content
  *       404:
  *         description: The user, the place or the pass have not been found
  *       500:
@@ -168,17 +174,31 @@
 
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
-const bcrypt = require('bcrypt');
+const { isPlaceAccessValid, isObjectKeysDefined, isAgeValid } = require('../helpers/validator');
 
 exports.createUser = async (req, res) => {
   try {
-    const user = await createUser(req.body);
-    if (!user) {
-      return res.status(404).json({ message: 'Error: user has not successfully been created' });
+    if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
+      return res.status(400).json({ message: 'Error: there is required fields missing' });
     }
+
+    if (!isAgeValid(req.body.age)) {
+      return res.status(401).json({ message: 'Error: age beyond boundaries' });
+    }
+
+    const user = await createUser(req.body);
+    if (user?.error) {
+      return res.status(404).json({ message: user.error });
+    }
+
+    delete user._doc.password;
 
     res.status(201).json(user);
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -203,8 +223,14 @@ exports.getUserById = async (req, res) => {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
+    delete user._doc.password;
+
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -212,26 +238,41 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { password, ...otherData } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true });
+    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true }).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }
 
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    } else if (err.code === 11000) {
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
 
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.userId);
+    const user = await User.findByIdAndDelete(req.params.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been deleted' });
     }
 
+    const pass = await Pass.findByIdAndDelete(user.pass_id);
+    if (!pass) {
+      return res.status(404).json({ message: 'Error: pass has not successfully been deleted' });
+    }
+
     res.status(200).json(user);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -253,12 +294,16 @@ exports.checkPlaceAccess = async (req, res) => {
       return res.status(404).json({ message: 'Error: place has not successfully been found' });
     }
 
-    if (user.age >= place.required_age_level && pass.level >= place.required_pass_level) {
-      return res.status(200).json(place);
-    } else {
-      return res.status(403).json({ message: 'Error: you are not unauthorized to access this page' })
+    if (!isPlaceAccessValid(user.age, place.required_age_level, pass.level, place.required_pass_level)) {
+      return res.status(403).json({ message: 'Error: you are not authorized to access this content' })
     }
+
+    res.status(200).json(place);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -285,6 +330,10 @@ exports.getPlacesByUserId = async (req, res) => {
 
     res.status(200).json(places);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Error: the id for this user does not exist' });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }

@@ -1,30 +1,30 @@
-const { User, Pass, Place } = require('../models');
+const { User, Pass } = require('../models');
 const bcrypt = require('bcrypt');
 
-const createUser = async (req, res) => {
+const createUser = async (body) => {
   try {
     const pass = await Pass.create({ level: 1 });
     if (!pass) {
-      throw new Error('Error: pass has not successfully been created');
+      return { error: 'Error: pass has not successfully been created' };
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+    const hashedPassword = await bcrypt.hash(body.password, 12);
     if (!hashedPassword) {
-      throw new Error('Erorr: the hashed password has not successfully been created');
+      return { error: 'Erorr: the hashed password has not successfully been created' };
     }
 
     const user = await User.create({
-      ...req.body,
+      ...body,
       pass_id: pass._id,
       password: hashedPassword
     });
     if (!user) {
-      throw new Error('Error: user has not successfully been created');
+      return { error: 'Error: user has not successfully been created' };
     }
 
     return user;
   } catch (err) {
-    throw new Error(err.message);
+    throw err;
   }
 }
 

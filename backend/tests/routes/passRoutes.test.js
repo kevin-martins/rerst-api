@@ -1,67 +1,60 @@
-const request = require('supertest');
-const app = require('../../server');
+const axios = require('axios');
+const { faker } = require('@faker-js/faker');
+const { addLocalPath } = require('../../helpers/helpers');
 
 describe('Pass Routes', () => {
-  beforeAll(() => {
-    //check mongodb connection
-  })
-  afterAll(() => {
-    //close mongodb 
-  })
   let passId;
 
   it('should create a new pass', async () => {
-    const res = await request(app)
-      .post('/passes')
-      .send({
-        level: 5
-      });
+    const res = await axios.post(addLocalPath('/passes'), { level: 5 });
 
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('_id');
-    expect(res.body).toHaveProperty('created_at');
-    expect(res.body).toHaveProperty('updated_at');
-    passId = res.body._id;
+    expect(res.status).toBe(201);
+    expect(res.data).toHaveProperty('_id');
+    expect(res.data).toHaveProperty('created_at');
+    expect(res.data).toHaveProperty('updated_at');
+    passId = res.data._id;
+    expect(passId).toBeDefined();
   });
 
   it('should get all passes', async () => {
-    const res = await request(app).get(`/passes`);
+    const res = await axios.get(addLocalPath('/passes'));
 
-    expect(res.statusCode).toBe(200);
-    res.body.forEach(pass => {
+    expect(res.status).toBe(200);
+    res.data.forEach(pass => {
       expect(pass).toHaveProperty('_id');
     })
   });
 
   it('should get a pass by ID', async () => {
-    const res = await request(app).get(`/passes/${passId}`);
+    const res = await axios.get(addLocalPath(`/passes/${passId}`));
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('_id', passId);
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('_id', passId);
   });
 
   it('should update a pass by ID', async () => {
-    const res = await request(app)
-      .put(`/passes/${passId}`)
-      .send({
-        level: 3
-      });
+    const res = await axios
+      .put(addLocalPath(`/passes/${passId}`), { level: 3 });
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('_id', passId);
-    expect(res.body).toHaveProperty('level');
-    expect(res.body.created_at).not.toBe(res.body.updated_at)
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('_id', passId);
+    expect(res.data).toHaveProperty('level');
+    expect(res.data.created_at).not.toEqual(res.data.updated_at);
   });
 
   it('should delete a pass by ID', async () => {
-    const res = await request(app).delete(`/passes/${passId}`);
+    const res = await axios.delete(addLocalPath(`/passes/${passId}`));
 
-    expect(res.statusCode).toBe(200);
+    expect(res.status).toBe(200);
   });
 
-  it('should return 404 when trying to get a non-existent pass', async () => {
-    const res = await request(app).get('/passes/none');
+  it('should return 404 when trying to get, update, or delete a non-existent pass', async () => {
+    const res = await Promise.all([
+      axios.get(addLocalPath('/passes/none')).catch(err => err.response),
+      axios.put(addLocalPath('/passes/none')).catch(err => err.response),
+      axios.delete(addLocalPath('/passes/none')).catch(err => err.response),
+    ]);
 
-    expect(res.statusCode).toBe(404);
+    res.forEach(pass => expect(pass.status).toBe(404));
   });
 });
