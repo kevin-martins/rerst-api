@@ -103,7 +103,7 @@ describe("Place Models", () => {
 
     for (const field of invalidFields) {
       for (const value of field.values) {
-        const res = await axios.put(addLocalPath('/places'),
+        const res = await axios.put(addLocalPath(`/places/${placeId}`),
           {
             [field.name]: value,
           }
