@@ -2,7 +2,7 @@ const axios = require('axios');
 const { faker } = require('@faker-js/faker');
 const { addLocalPath } = require('../../helpers/helpers');
 
-describe("Place models", () => {
+describe("Place Models", () => {
   let placeId;
   const placeMock = {
     phone_number: faker.phone.number(),
@@ -81,6 +81,30 @@ describe("Place models", () => {
         const res = await axios.post(addLocalPath('/places'),
           {
             ...placeMock,
+            [field.name]: value,
+          }
+        ).catch(err => err.response);
+    
+        expect(res.status).toBe(401);
+      }
+    }
+  });
+
+  it('should not update a new place if pass level out 1 and 5 included and age out 18 and 150 included', async () => {
+    const invalidFields = [
+      { name: "required_pass_level", values: [
+        faker.number.int({ min: 6, max: 10000 }),
+        faker.number.int({ min: -10000, max: 0 })] },
+      { name: "required_age_level", values: [
+        faker.number.int({ min: 151, max: 10000 }),
+        faker.number.int({ min: -10000, max: 17 })
+      ]}
+    ];
+
+    for (const field of invalidFields) {
+      for (const value of field.values) {
+        const res = await axios.put(addLocalPath('/places'),
+          {
             [field.name]: value,
           }
         ).catch(err => err.response);
