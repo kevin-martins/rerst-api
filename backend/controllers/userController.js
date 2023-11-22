@@ -36,6 +36,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UserResponse'
+ *       400:
+ *         description: Some required parameters are missing in your request
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The user has not been created
  *       500:
@@ -85,6 +89,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UserResponse'
+ *       401:
+ *         description: The request contains data that could not be validated
  *       404:
  *         description: The user has not been updated
  *       500:
@@ -135,7 +141,7 @@
  *             schema:
  *               $ref: '#/components/schemas/PlaceResponse'
  *       403:
- *         description: The user has not been authorized
+ *         description: You are not authorized to access this content
  *       404:
  *         description: The user, the place or the pass have not been found
  *       500:
@@ -186,7 +192,7 @@ exports.createUser = async (req, res) => {
     res.status(201).json(user);
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
@@ -238,7 +244,7 @@ exports.updateUser = async (req, res) => {
     if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     } else if (err.code === 11000) {
-      return res.status(400).json({ message: 'Error: trying to duplicate a unique key' });
+      return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
     res.status(500).json({ error: err.message });
@@ -285,7 +291,7 @@ exports.checkPlaceAccess = async (req, res) => {
     }
 
     if (!isPlaceAccessValid(user.age, place.required_age_level, pass.level, place.required_pass_level)) {
-      return res.status(403).json({ message: 'Error: place not authorized' })
+      return res.status(403).json({ message: 'Error: you are not authorized to access this content' })
     }
 
     res.status(200).json(place);
