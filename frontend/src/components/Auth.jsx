@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import Loading from './Loading'
 import ToggleSwitch from './ToggleSwitch'
 
@@ -9,22 +10,16 @@ const LogIn = ({ setIsLoading, setIsLogged }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
-    fetch('http://localhost:8080/login', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ phoneNumber, password })
-    })
-      .then((res) => {
-        console.log('here', res)
-        console.log(res.status)
+    axios
+      .post('http://localhost:8080/login', { phone_number: phoneNumber, password })
+      .then(res => {
+        console.log(res.data)
         if (res.status === 200) {
           setIsLogged(true);
         }
         setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch(err => console.log(err))
   }
 
   return (
@@ -71,29 +66,27 @@ const LogIn = ({ setIsLoading, setIsLogged }) => {
 
 const SignIn = ({ setIsLoading, setIsLogged }) => {
   const [data, setData] = useState({
-    "phone_number": "",
-    "password": "",
-    "password_confirmation": ""
+    "first_name": "Kevin",
+    "last_name": "Martins",
+    "age": 30,
+    "phone_number": "0695886540",
+    "password": "secret",
+    "password_confirmation": "secret"
   })
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    setIsLoading(true)
-    fetch('http://localhost:8080/signin', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then((res) => {
-        console.log(res.status)
+    e.preventDefault();
+    setIsLoading(true);
+    axios
+      .post('http://localhost:8080/signin', data)
+      .then(res => {
+        console.log(res.data)
         if (res.status === 201) {
           setIsLogged(true);
         }
         setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch(err => console.log(err))
   }
 
   const handleChange = (e) => {
@@ -120,7 +113,7 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
             type="text"
             id="phone_number"
             name="phone_number"
-            value={data.phoneNumber}
+            value={data.phone_number}
             onChange={handleChange}
             className="w-full p-2 rounded text-black outline-none"
           />
@@ -146,7 +139,7 @@ const SignIn = ({ setIsLoading, setIsLogged }) => {
             type="password"
             id="password_confirmation"
             name="password_confirmation"
-            value={data.passwordConfirmation}
+            value={data.password_confirmation}
             onChange={handleChange}
             className="w-full p-2 rounded text-black outline-none"
           />
