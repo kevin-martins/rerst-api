@@ -52,7 +52,12 @@ const UserInfo = (props) => {
         Informations
         <div className='h-[.5px] bg-white' />
       </h2>
-      <Link to={`/users/${props._id}/places`} className='mt-5 inline-block text-center rounded py-3 px-6 bg-blue-500 text-white hover:bg-blue-600'>voir les places disponnible</Link>
+      <Link
+        to={`/users/${props._id}/places`}
+        className='mt-5 inline-block text-center rounded py-3 px-6 bg-blue-500 text-white hover:bg-blue-600'
+      >
+        voir les places disponnible
+      </Link>
       <section className='max-w-md grid gap-6 mx-auto mt-5'>
         <div className='flex flex-row'>
           <p className='my-auto shrink-0'>niveau actuel du pass: </p>
