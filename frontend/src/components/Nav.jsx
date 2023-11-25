@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Settings from './Settings'
 
 const Nav = ({ setIsLogged }) => {
 	const navigation = [
@@ -27,7 +28,7 @@ const Nav = ({ setIsLogged }) => {
 						</Link>
 				</li>
 				))}
-        <button className='ml-auto px-3' onClick={handleClick}>Log off</button>
+        <Settings setIsLogged={setIsLogged} />
 			</ul>
     </nav>
   )
