@@ -12,13 +12,19 @@ const PassCard = ({ passId, pass, setIsUpdating, currentLevel, setData }) => {
   }
 
   return (
-    <li className='relative w-44 pb-2 bg-gray-900 rounded-md text-center'>
+    <li className='relative w-48 pb-2 bg-gray-900 rounded-md text-center'>
       <p
         className='w-full bg-gradient-to-r rounded-t-md from-indigo-500 via-purple-500 to-pink-500 p-2 text-lg'
       >
         {pass.price === 0 ? 'Gratuit' : pass.price + "€"}
       </p>
       <div>
+        <h1 className='w-max mx-auto'>
+          Les Avantages du Pass
+          <div className='h-[.5px] w-content bg-white mt-1'></div>
+        </h1>
+      </div>
+      <div className='mt-2'>
         <p>Débloque l'acces aux</p>
         {pass.items.map((item, i) => (
           <p key={i}>- {item.message}</p>
@@ -31,8 +37,8 @@ const PassCard = ({ passId, pass, setIsUpdating, currentLevel, setData }) => {
           >
             Choisir
           </button>
-        : <div className='absolute bg-white/70 w-44 rounded-md top-0 left-0 mx-auto h-full grid place-items-center border-2 border-green-500'>
-            <p className='text-black text-2xl'>Pass actuel</p>
+        : <div className='absolute bg-black/60 w-full rounded-md top-0 left-0 mx-auto h-full grid place-items-center border-2 border-green-500'>
+            <p className='text-white text-2xl'>Pass actuel</p>
           </div>
       }
     </li>
