@@ -56,7 +56,12 @@ const Profile = ({ user, setUser }) => {
         <div className='flex flex-row'>
           <p className='my-auto shrink-0'>niveau actuel du pass: </p>
           <p className='text-lg m-auto px-3'>{passLevel}</p>
-          <Link to={`/passes/${user.pass_id}`} className='w-full text-center rounded p-2 bg-blue-500 text-white hover:bg-blue-600'>changer de pass</Link>
+          <Link
+            to={`/passes/${user.pass_id}`} 
+            className='w-full text-center rounded p-2 bg-blue-500 text-white hover:bg-blue-600'
+          >
+            Voir mon pass
+          </Link>
         </div>
         <Form onSubmit={onSubmit} fields={profileFormData} data={user} />
       </section>
