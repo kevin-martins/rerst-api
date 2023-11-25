@@ -3,23 +3,17 @@ import Home from '../pages/Home';
 import { Navigate, Outlet } from 'react-router-dom';
 import Nav from './Nav';
 import Auth from './Auth'
+import Form from './Form'
 
-const Layout = () => {
-  const [isLogged, setIsLogged] = useState(false)
-
+const Layout = ({ setIsLogged }) => {
   return (
     <div className='bg-slate-800 h-screen'>
-      {!isLogged
-        ? <Auth setIsLogged={setIsLogged} />
-        : <>
-            <header className='fixed w-full p-8'>
-              <Nav setIsLogged={setIsLogged} />
-            </header>
-            <main className='container w-full mx-auto'>
-              <Outlet />
-            </main>
-          </>
-        }
+      <header className='fixed w-full p-8'>
+        <Nav setIsLogged={setIsLogged} />
+      </header>
+      <main className='container w-full mx-auto py-44'>
+        <Outlet />
+      </main>
     </div>
   )
 }
