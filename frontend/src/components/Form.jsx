@@ -1,73 +1,36 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import FieldErrors from './FieldError'
+import FieldError from './FieldError'
 
-const fields = [
-  {
-    id: "first_name",
-    name: 'Prenom',
-    type: "text",
-    options: {
-      required: 'Veuillez préciser votre nom'
-    }
-  },
-  {
-    id: "age",
-    name: 'Age',
-    type: "text",
-    options: {
-      required: 'Veuillez préciser votre age',
-      maxLength: {
-        value: 18,
-        message: 'Vous devez avoir au minimum 18 ans'
-      }
-    }
-  },
-]
-// (field?.options && Object.keys(field.options).includes(errors[`${field.id}`]?.type))
-const Form = ({ onSubmit }) => {
-  const { register, watch, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched' })
-  const [formData, setFormData] = useState(
-    {
-      "first_name": undefined,
-      "last_name": undefined,
-      "age": undefined,
-      "phone_number": undefined,
-      "password": undefined,
-    }
-  );
-
-  const handleChange = (e) => {
-    setFormData(prev => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value
-      }
-    })
-  };
+const Form = ({ onSubmit, fields, data }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched', defaultValues: data });
 
   return (
     <form
-        className='flex flex-col gap-4 w-2/3 mx-auto'
-        onSubmit={handleSubmit(onSubmit)}
+      className='flex flex-col gap-4 max-w-md'
+      onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         {fields.map(field => (
-          <div>
-            <label htmlFor="phone_number">
-              Numéro de téléphone
+          <div key={field.id} className=''>
+            <label htmlFor={field.id} className="pr-2 my-auto w-44">
+              {field.options?.required && <span className='text-red-500'>* </span>}
+              {field.name}
             </label>
             <input
-              type="text"
-              id="phone_number"
-              name="phone_number"
-              value={formData[field]}
-              onChange={handleChange}
-              className="w-full p-2 rounded text-black outline-none"
+              type={field.type}
+              id={field.id}
+              name={field.id}
+              className={`w-full p-2 rounded text-black outline-none border-2
+                ${(field?.options && Object.keys(field.options).includes(errors[`${field.id}`]?.type)) ? 'border-red-500' : ''}
+              `}
               {...register(field.id, { ...field?.options })}
             />
-            <FieldErrors error={errors[field.id]} />
+            <FieldError error={errors[field.id]} />
           </div>
         ))}
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600">
+          Modifier
+        </button>
       </form>
   )
 }
