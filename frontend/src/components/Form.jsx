@@ -19,9 +19,8 @@ const Form = ({ onSubmit, fields, data }) => {
             <input
               type={field.type}
               id={field.id}
-              name={field.id}
               className={`w-full p-2 rounded text-black outline-none border-2
-                ${(field?.options && Object.keys(field.options).includes(errors[`${field.id}`]?.type)) ? 'border-red-500' : ''}
+                ${(field?.options && Object.keys(field.options).includes(errors[field.id]?.type)) ? 'border-red-500' : ''}
               `}
               {...register(field.id, { ...field?.options })}
             />
