@@ -10,13 +10,14 @@ const Profile = ({ user, setUser }) => {
   const [passLevel, setPassLevel] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true)
     axios
       .get(`http://localhost:8080/passes/${user.pass_id}`)
       .then(res => {
-        console.log(res)
         setPassLevel(res.data.level);
       })
-      .catch(err => console.log(err))
+      .catch(err => alert(err.response.message))
+      .finally(() => setIsLoading(false));
   }, [user]);
 
   const onSubmit = (data) => {

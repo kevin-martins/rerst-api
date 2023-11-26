@@ -25,7 +25,7 @@ const PassId = () => {
       .finally(() => {
         setIsLoading(false);
         setIsUpdating(false);
-      })
+      });
   }, [isUpdating, id]);
 
   if (isLoading || isUpdating) {

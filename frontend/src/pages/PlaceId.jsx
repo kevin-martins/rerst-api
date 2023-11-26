@@ -17,12 +17,12 @@ const PlaceId = ({ user }) => {
         placeId: id
       })
       .then((res) => {
-        console.log(res)
         if (res.status === 200) {
           setPlace(res.data);
         }
       })
       .catch((err) => {
+        alert(err.response.message)
         if (err.response.status === 403) {
           setUnautorized(true);
         }

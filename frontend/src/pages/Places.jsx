@@ -17,11 +17,12 @@ const Places = ({ user }) => {
           setPlaces(res.data);
         }
       })
-      .catch((err) => console.log(err))
-      .finally(setIsLoading(false));
+      .catch((err) => alert(err.response.message))
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`http://localhost:8080/passes/${user.pass_id}`)
       .then(res => {
@@ -29,8 +30,8 @@ const Places = ({ user }) => {
           setPassLevel(res.data.level);
         }
       })
-      .catch((err) => console.log(err))
-      .finally(setIsLoading(false));
+      .catch((err) => alert(err.response.message))
+      .finally(() => setIsLoading(false));
   },  []);
 
   if (isLoading) {
