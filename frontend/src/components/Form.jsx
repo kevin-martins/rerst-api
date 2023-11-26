@@ -6,7 +6,7 @@ const Form = ({ onSubmit, formData, defaultValues }) => {
   const { register, watch, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched', defaultValues: defaultValues });
   return (
     <form
-      className='flex flex-col gap-4 max-w-md'
+      className='flex flex-col gap-1 max-w-md'
       onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         {formData.fields.map(field => (
@@ -27,7 +27,7 @@ const Form = ({ onSubmit, formData, defaultValues }) => {
             <FieldError error={errors[field.id]} />
           </div>
         ))}
-        <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600">
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600 mt-2">
           {formData.submitText}
         </button>
       </form>
