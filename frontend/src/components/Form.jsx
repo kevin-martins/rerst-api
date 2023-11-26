@@ -2,15 +2,14 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import FieldError from './FieldError'
 
-const Form = ({ onSubmit, fields, data }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched', defaultValues: data });
-
+const Form = ({ onSubmit, formData, defaultValues }) => {
+  const { register, watch, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched', defaultValues: defaultValues });
   return (
     <form
       className='flex flex-col gap-4 max-w-md'
       onSubmit={handleSubmit((data) => onSubmit(data))}
       >
-        {fields.map(field => (
+        {formData.fields.map(field => (
           <div key={field.id} className=''>
             <label htmlFor={field.id} className="pr-2 my-auto w-44">
               {field.options?.required && <span className='text-red-500'>* </span>}
@@ -21,6 +20,7 @@ const Form = ({ onSubmit, fields, data }) => {
               id={field.id}
               className={`w-full p-2 rounded text-black outline-none border-2
                 ${(field?.options && Object.keys(field.options).includes(errors[field.id]?.type)) ? 'border-red-500' : ''}
+                ${field?.watch ? field.watch(watch) : ''}
               `}
               {...register(field.id, { ...field?.options })}
             />
@@ -28,7 +28,7 @@ const Form = ({ onSubmit, fields, data }) => {
           </div>
         ))}
         <button type="submit" className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600">
-          Modifier
+          {formData.submitText}
         </button>
       </form>
   )

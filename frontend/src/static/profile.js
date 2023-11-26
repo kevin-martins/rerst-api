@@ -1,4 +1,6 @@
-export const profileFormData = [
+export const profileFormData = {
+  submitText: "Envoyer",
+  fields: [
     {
       id: "first_name",
       name: 'Prenom',
@@ -45,3 +47,4 @@ export const profileFormData = [
       type: "text",
     }
   ]
+}
