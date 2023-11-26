@@ -63,7 +63,7 @@ const Profile = ({ user, setUser }) => {
             Voir mon pass
           </Link>
         </div>
-        <Form onSubmit={onSubmit} fields={profileFormData} data={user} />
+        <Form onSubmit={onSubmit} formData={profileFormData} defaultValues={user} />
       </section>
     </div>
   )
