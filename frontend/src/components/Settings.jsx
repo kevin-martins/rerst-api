@@ -17,12 +17,16 @@ const Settings = ({ setIsLogged }) => {
           <Link
             to="/profile"
             className='hover:text-gray-300'
+            onClick={() => setActivated(false)}
           >
             Profil
           </Link>
           <button
             className='hover:text-gray-300'
-            onClick={() => setIsLogged(false)}
+            onClick={() => {
+              setActivated(false);
+              setIsLogged(false);
+            }}
           >
             Déconnexion
           </button>
