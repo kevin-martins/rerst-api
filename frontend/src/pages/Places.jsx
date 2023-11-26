@@ -43,11 +43,11 @@ const Places = ({ user }) => {
       <ul className='flex flex-wrap gap-5'>
         {places.map(place => (
           <li className='w-96 bg-slate-900 mx-auto text-white rounded-lg border-2 border-slate-900'>
-            <div className='grid grid-cols-2 gap-x-2'>
-              <p className='ml-auto'>age requis: </p>
-              <p className={user.age < place.required_age_level ? 'text-red-500' : 'text-green-500'}>{place.required_age_level}</p>
-              <p className='ml-auto'>niveau de pass requis: </p>
-              <p className={passLevel < place.required_pass_level ? 'text-red-500' : 'text-green-500'}>{place.required_pass_level}</p>
+            <div className='flex gap-x-2 mt-2'>
+              <p className='ml-auto'>Age requis: </p>
+              <p className={`${user.age < place.required_age_level ? 'text-red-500' : 'text-green-500'} mr-auto`}>{place.required_age_level}</p>
+              <p className='ml-auto'>Pass requis: </p>
+              <p className={`${passLevel < place.required_pass_level ? 'text-red-500' : 'text-green-500'} mr-auto`}>{place.required_pass_level}</p>
             </div>
             <div className='w-full h-28 grid place-items-center'>
               <Link
