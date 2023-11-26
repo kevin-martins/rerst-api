@@ -1,3 +1,25 @@
+export const logInFormData = {
+  submitText: "Connexion",
+  fields: [
+    {
+      id: "phone_number",
+      name: 'Numéro de téléphone',
+      type: "text",
+      options: {
+        required: 'Veuillez renseigner votre numéro de téléphone',
+      }
+    },
+    {
+      id: "password",
+      name: 'Mot de passe',
+      type: "password",
+      options: {
+        required: 'Veuillez renseigner votre mot de passe',
+      },
+    }
+  ]
+}
+
 export const signInFormData = {
   submitText: "Envoyer",
   fields: [
