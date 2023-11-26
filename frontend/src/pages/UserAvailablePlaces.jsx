@@ -24,9 +24,14 @@ const UserAvailablePlaces = () => {
         : <ul className='grid grid-flow-row grid-cols-3 gap-4'>
             {places.map(place => (
               <li className='bg-slate-900 text-center p-2 rounded-lg'>
+                <p>{place.phone_number}</p>
                 <p>{place.address}</p>
-                <p>{place.required_age_level}</p>
-                <p>{place.required_pass_level}</p>
+                <div className='flex gap-x-2'>
+                  <p className='ml-auto'>Age requis: </p>
+                  <p className='text-green-500 mr-auto'>{place.required_age_level}</p>
+                  <p className='ml-auto'>Pass requis: </p>
+                  <p className='text-green-500 mr-auto'>{place.required_pass_level}</p>
+                </div>
               </li>
             ))}
           </ul>
