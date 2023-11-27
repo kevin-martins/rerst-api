@@ -10,12 +10,10 @@ const Profile = ({ user, setUser }) => {
   const [passLevel, setPassLevel] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
       .get(`http://localhost:8080/passes/${user.pass_id}`)
-      .then(res => {
-        setPassLevel(res.data.level);
-      })
+      .then(res => res.status === 200 && setPassLevel(res.data.level))
       .catch(err => alert(err.response.message))
       .finally(() => setIsLoading(false));
   }, [user]);
@@ -29,7 +27,7 @@ const Profile = ({ user, setUser }) => {
           setUser(res.data);
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => alert(err.response.message))
       .finally(() => setIsLoading(false));
   };
 
