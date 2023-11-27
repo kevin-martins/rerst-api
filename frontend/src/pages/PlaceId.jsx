@@ -35,7 +35,8 @@ const PlaceId = ({ user }) => {
   }
 
   if (unautorized) {
-    return alert("Vous n'etes pas autorisé sur cette page");
+    alert("Vous n'etes pas autorisé sur cette page");
+    return <Unauthorized />
   }
 
   return (
