@@ -7,7 +7,7 @@ const PassCard = ({ passId, pass, setIsUpdating, currentLevel, setData }) => {
     axios
       .put(`http://localhost:8080/passes/${passId}`, { level: pass.level })
       .then(res => setData(res.data))
-      .catch((err) => alert(err.response.message))
+      .catch(err => alert(err.response.message))
       .finally(() => setIsUpdating(false));
   }
 

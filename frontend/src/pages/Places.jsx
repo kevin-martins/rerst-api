@@ -17,7 +17,7 @@ const Places = ({ user }) => {
           setPlaces(res.data);
         }
       })
-      .catch((err) => alert(err.response.message))
+      .catch(err => alert(err.response.message))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -30,7 +30,7 @@ const Places = ({ user }) => {
           setPassLevel(res.data.level);
         }
       })
-      .catch((err) => alert(err.response.message))
+      .catch(err => alert(err.response.message))
       .finally(() => setIsLoading(false));
   },  []);
 
@@ -43,7 +43,7 @@ const Places = ({ user }) => {
       <p className='text-center text-white mb-5'>Age: {user.age}, Niveau du pass: {passLevel}</p>
       <ul className='flex flex-wrap gap-5'>
         {places.map(place => (
-          <li className='w-96 bg-slate-900 mx-auto text-white rounded-lg border-2 border-slate-900'>
+          <li key={place._id} className='w-96 bg-slate-900 mx-auto text-white rounded-lg border-2 border-slate-900'>
             <div className='flex gap-x-2 mt-2'>
               <p className='ml-auto'>Age requis: </p>
               <p className={`${user.age < place.required_age_level ? 'text-red-500' : 'text-green-500'} mr-auto`}>{place.required_age_level}</p>
