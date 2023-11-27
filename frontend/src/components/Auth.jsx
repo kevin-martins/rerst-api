@@ -23,7 +23,7 @@ const LogIn = ({ setIsLoading, setIsLogged, setUser }) => {
   return (
     <>
       <h1 className='text-xl text-center pb-3'>J'ai déjà un compte</h1>
-      <Form onSubmit={onSubmit} formData={logInFormData} defaultValues={{}} />
+      <Form onSubmit={onSubmit} formData={logInFormData} />
     </>
   )
 }
@@ -48,7 +48,7 @@ const SignIn = ({ setIsLoading, setIsLogged, setUser }) => {
   return (
     <>
       <h1 className='text-xl text-center pb-3'>je créer mon compte</h1>
-      <Form onSubmit={onSubmit} formData={signInFormData} defaultValues={{}} />
+      <Form onSubmit={onSubmit} formData={signInFormData} />
     </>
   )
 }

@@ -16,19 +16,12 @@ export const changeDate = (date) => {
   return capitalize(day) + ' ' + dateTime + ' ' + capitalize(month) + ' ' + others.join(' ');
 }
 
-export const mapUserData = (data) => {
-  const array = []
-  const convert = {
-    "first_name": "prénom",
-    "last_name": "nom",
-    "age": "age",
-    "phone_number": "téléphone",
-    "address": "adresse"
-  }
+export const normaliseData = (data) => {
   for (const [key, value] of Object.entries(data)) {
-    if (key in convert) {
-      array.push({ name: convert[key], key, value })
+    if (typeof value === 'string' && !key.includes('password')) {
+      console.log(value.trim(), value.toLowerCase(), value.trim().toLowerCase())
+      data[key] = capitalize(value.trim().toLowerCase());
     }
   }
-  return array
+  return data;
 }
