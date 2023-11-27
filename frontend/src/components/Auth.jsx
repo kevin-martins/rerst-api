@@ -59,7 +59,7 @@ const Auth = ({ setIsLogged, setUser }) => {
 
   return (
     <div className='grid place-content-center bg-gray-800 h-full h-screen'>
-      <div className='w-96 py-5 bg-slate-900 text-white rounded-lg mx-auto p-3'>
+      <div className='sm:w-96 py-5 bg-slate-900 text-white rounded-lg mx-auto px-6'>
         {isLoading && <Loading />}
         <ToggleSwitch setToggle={setToggle} />
 
