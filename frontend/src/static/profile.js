@@ -3,10 +3,14 @@ export const profileFormData = {
   fields: [
     {
       id: "first_name",
-      name: 'Prenom',
+      name: 'Prénom',
       type: "text",
       options: {
-        required: 'Veuillez préciser votre prenom'
+        required: 'Veuillez préciser votre prénom',
+        pattern: {
+          value: /^[a-zA-Z]+([ -][a-zA-Z]+)?$/g,
+          message: "Le prénom doit être uniquement composé de lettres"
+        }
       }
     },
     {
@@ -14,15 +18,23 @@ export const profileFormData = {
       name: 'Nom',
       type: "text",
       options: {
-        required: 'Veuillez préciser votre nom'
+        required: 'Veuillez préciser votre nom',
+        pattern: {
+          value: /^[a-zA-Z]+([ -][a-zA-Z]+)?$/g,
+          message: "Le nom doit être uniquement composé de lettres"
+        }
       }
     },
     {
       id: "phone_number",
       name: 'Numéro de téléphone',
-      type: "text",
+      type: "tel",
       options: {
-        required: 'Veuillez préciser votre numéro de téléphone'
+        required: 'Veuillez préciser votre numéro de téléphone',
+        pattern: {
+          value: /^(?:\+33\s?|0)[1-9]([.|\s|-]?\d{2}){4}$/g,
+          message: "Le numéro de téléphone n'est pas valide"
+        }
       }
     },
     {
@@ -38,6 +50,10 @@ export const profileFormData = {
         max: {
           value: 150,
           message: 'Vous ne pouvez pas avoir plus de 150 ans'
+        },
+        pattern: {
+          value: /^[0-9]+$/g,
+          message: "L'age n'est pas valide"
         }
       }
     },
