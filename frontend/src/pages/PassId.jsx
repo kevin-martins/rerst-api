@@ -15,13 +15,13 @@ const PassId = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:8080/passes/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
+    .get(`http://localhost:8080/passes/${id}`)
+    .then(res => {
+      if (res.status === 200) {
           setData(res.data);
         }
       })
-      .catch((err) => alert(err.response.message))
+      .catch(err => alert(err.response.message))
       .finally(() => {
         setIsLoading(false);
         setIsUpdating(false);
