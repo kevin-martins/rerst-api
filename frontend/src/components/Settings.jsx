@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
-const Settings = ({ setIsLogged }) => {
+const Settings = ({ setIsLogged, user }) => {
   const [activated, setActivated] = useState(false);
 
   return (
@@ -20,6 +20,13 @@ const Settings = ({ setIsLogged }) => {
             onClick={() => setActivated(false)}
           >
             Profil
+          </Link>
+          <Link
+            to={`/passes/${user.pass_id}`}
+            className='hover:text-gray-300'
+            onClick={() => setActivated(false)}
+          >
+            Mon Pass
           </Link>
           <button
             className='hover:text-gray-300'

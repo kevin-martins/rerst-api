@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import Home from '../pages/Home';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Nav from './Nav';
-import Auth from './Auth'
-import Form from './Form'
+import Footer from './Footer';
 
-const Layout = ({ setIsLogged }) => {
+const Layout = ({ setIsLogged, user }) => {
   return (
     <div className='bg-slate-800'>
-      <header className='fixed w-full p-8'>
-        <Nav setIsLogged={setIsLogged} />
+      <header className='bg-slate-800 fixed w-full h-content pt-8'>
+        <Nav setIsLogged={setIsLogged} user={user} />
       </header>
-      <main className='container w-full mx-auto py-44'>
+      <main className='container w-full mx-auto pt-40 pb-12'>
         <Outlet />
       </main>
+      <footer>
+        <Footer setIsLogged={setIsLogged} />
+      </footer>
     </div>
   )
 }

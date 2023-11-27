@@ -23,7 +23,7 @@ const App = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Layout setIsLogged={setIsLogged} />}>
+      <Route path="/" element={<Layout setIsLogged={setIsLogged} user={user} />}>
         <Route index element={<Home />} />
         <Route path='/home' element={<Home />} />
         <Route path='/profile' element={<Profile user={user} setUser={setUser} />} />
@@ -41,9 +41,9 @@ const App = () => {
   }
 
   return (
-    <React.StrictMode>
+    // <React.StrictMode>
       <RouterProvider router={router} />
-    </React.StrictMode>
+    // </React.StrictMode>
   )
 }
 

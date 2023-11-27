@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Settings from './Settings'
 
-const Nav = ({ setIsLogged }) => {
+const Nav = ({ setIsLogged, user }) => {
 	const navigation = [
 		{ title: "Accueil", href: "/" },
 		{ title: "Places", href: "/places" },
@@ -17,13 +17,13 @@ const Nav = ({ setIsLogged }) => {
 					>
 						<Link
 							to={nav.href}
-							className='inline-block w-36 py-2 text-center rounded-md bg-black hover:bg-yellow-500 hover:text-yellow-900'
+							className='inline-block w-36 text-center bg-blue-500 py-2 rounded hover:bg-blue-600'
 						>
 							{nav.title}
 						</Link>
 				</li>
 				))}
-        <Settings setIsLogged={setIsLogged} />
+        <Settings setIsLogged={setIsLogged} user={user} />
 			</ul>
     </nav>
   )
