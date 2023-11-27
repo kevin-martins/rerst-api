@@ -16,7 +16,7 @@ const PassCard = ({ passId, pass, setIsUpdating, currentLevel, setData }) => {
       <p
         className='w-full bg-gradient-to-r rounded-t-md from-indigo-500 via-purple-500 to-pink-500 p-2 text-lg'
       >
-        {pass.price === 0 ? 'Gratuit' : pass.price + "€"}
+        {pass.price === 0 ? 'Gratuit' : pass.price} &euro;
       </p>
       <div>
         <h1 className='w-max mx-auto'>
