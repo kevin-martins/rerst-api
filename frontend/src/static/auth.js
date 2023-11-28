@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const logInFormData = {
   submitText: "Connexion",
   fields: [
@@ -27,7 +25,7 @@ export const logInFormData = {
 }
 
 export const signInFormData = {
-  submitText: "Envoyer",
+  submitText: "S'inscrire",
   fields: [
     {
       id: "first_name",
@@ -74,10 +72,10 @@ export const signInFormData = {
     },
     {
       id: "age",
-      name: 'Age',
+      name: 'Âge',
       type: "text",
       options: {
-        required: 'Veuillez renseigner votre age',
+        required: 'Veuillez renseigner votre âge',
         min: {
           value: 18,
           message: 'Vous devez avoir au minimum 18 ans'

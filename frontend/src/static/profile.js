@@ -6,7 +6,7 @@ export const profileFormData = {
       name: 'Prénom',
       type: "text",
       options: {
-        required: 'Veuillez préciser votre prénom',
+        required: 'Veuillez renseigner votre prénom',
         pattern: {
           value: /^[a-zA-Z]+([ -][a-zA-Z]+)?$/g,
           message: "Le prénom doit être uniquement composé de lettres"
@@ -18,7 +18,7 @@ export const profileFormData = {
       name: 'Nom',
       type: "text",
       options: {
-        required: 'Veuillez préciser votre nom',
+        required: 'Veuillez renseigner votre nom',
         pattern: {
           value: /^[a-zA-Z]+([ -][a-zA-Z]+)?$/g,
           message: "Le nom doit être uniquement composé de lettres"
@@ -30,7 +30,7 @@ export const profileFormData = {
       name: 'Numéro de téléphone',
       type: "tel",
       options: {
-        required: 'Veuillez préciser votre numéro de téléphone',
+        required: 'Veuillez renseigner votre numéro de téléphone',
         pattern: {
           value: /^(?:\+33\s?|0)[1-9]([.|\s|-]?\d{2}){4}$/g,
           message: "Le numéro de téléphone n'est pas valide"
@@ -39,10 +39,10 @@ export const profileFormData = {
     },
     {
       id: "age",
-      name: 'Age',
+      name: 'Âge',
       type: "text",
       options: {
-        required: 'Veuillez préciser votre age',
+        required: 'Veuillez renseigner votre âge',
         min: {
           value: 18,
           message: 'Vous devez avoir au minimum 18 ans'
