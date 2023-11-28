@@ -61,13 +61,6 @@ export const signInFormData = {
           value: /^(?:\+33\s?|0)[1-9]([.|\s|-]?\d{2}){4}$/g,
           message: "Le numéro de téléphone n'est pas valide"
         }
-      },
-      fetch: async () => {
-        const res = axios
-          .get('')
-          .then(res => res.data)
-          .catch(err => err.response)
-        return res
       }
     },
     {
