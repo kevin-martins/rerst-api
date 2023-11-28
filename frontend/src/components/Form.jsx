@@ -18,6 +18,7 @@ const Form = ({ onSubmit, formData, defaultValues = {} }) => {
             {field.name}
           </label>
           <input
+            aria-label={field.name}//to successfully get the label's name in my front-end test
             type={field.type}
             id={field.id}
             className={`w-full p-2 rounded text-black outline-none border-2
