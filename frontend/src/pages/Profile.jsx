@@ -36,7 +36,7 @@ const Profile = ({ user, setUser }) => {
   }
 
   return (
-    <div className='text-white'>
+    <div className='mx-2 text-white text-sm sm:text-base'>
       <section className='flex mb-3'>
         <h1 className='text-3xl mr-2'>Welcome back </h1>
         <span className='text-xl mt-auto'>{user.last_name} {user.first_name}</span>
