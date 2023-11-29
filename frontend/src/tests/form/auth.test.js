@@ -26,7 +26,6 @@ describe("Log In Form Test", () => {
       expect(phoneNumberError).toBeInTheDocument();
       expect(passwordError).toBeInTheDocument();
     });
-
   });
 
   test("Display errors for invalid phone number upon form submission", async () => {
@@ -62,6 +61,43 @@ describe("Log In Form Test", () => {
 
       await waitFor(() => {
         expect(getByText(error)).toBeInTheDocument();
+      });
+    }
+  });
+
+  test("Don't display errors on valid phone number", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={logInFormData}
+      />
+    );
+    const submitButton = getByText('Connexion');
+
+    const phoneNumberInput = getByLabelText('Numéro de téléphone');
+    const validPhoneNumber = [
+      {
+        value: "0" + faker.string.numeric({ length: 9 }),
+        error: "Le numéro de téléphone n'est pas valide"
+      },
+      {
+        value: "+33" + faker.string.numeric({ length: 9 }),
+        error: "Le numéro de téléphone n'est pas valide"
+      },
+      {
+        value: ("0" + faker.string.numeric({ length: 9 })).match(/.{2}/g).join(' '),
+        error: "Le numéro de téléphone n'est pas valide"
+      }
+    ]
+
+    for (const { value, error } of validPhoneNumber) {
+      await act(async () => {
+        await fireEvent.input(phoneNumberInput, { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
       });
     }
   });
@@ -127,6 +163,39 @@ describe("Sign In Form Test", () => {
     }
   });
 
+  test("Don't display errors on valid first name", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={signInFormData}
+      />
+    );
+    const submitButton = getByText("S'inscrire");
+    const firstNameInput = getByLabelText('Prénom');
+
+    const validFirstName = [
+      {
+        value: faker.person.firstName(),
+        error: 'Le prénom doit être uniquement composé de lettres'
+      },
+      {
+        value: faker.string.alpha(10),
+        error: 'Le prénom doit être uniquement composé de lettres'
+      }
+    ]
+
+    for (const { value, error } of validFirstName) {
+      await act(async () => {
+        await fireEvent.input(firstNameInput, { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+      
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
+      });
+    }
+  });
+
   test("Display errors for invalid last name upon form submission", async () => {
     const { getByLabelText, getByText } = render(
       <Form
@@ -155,6 +224,38 @@ describe("Sign In Form Test", () => {
       
       await waitFor(() => {
         expect(getByText(error)).toBeInTheDocument();
+      });
+    }
+  });
+
+  test("Don't display errors on valid last name", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={signInFormData}
+      />
+    );
+    const submitButton = getByText("S'inscrire");
+    const lastNameInput = getByLabelText('Nom');
+    const validLastName = [
+      {
+        value: faker.person.lastName(),
+        error: 'Le nom doit être uniquement composé de lettres'
+      },
+      {
+        value: faker.string.alpha(10),
+        error: 'Le nom doit être uniquement composé de lettres'
+      }
+    ]
+
+    for (const { value, error } of validLastName) {
+      await act(async () => {
+        await fireEvent.input(lastNameInput, { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+      
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
       });
     }
   });
@@ -196,6 +297,43 @@ describe("Sign In Form Test", () => {
     }
   });
 
+  test("Don't display errors on valid phone number", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={signInFormData}
+      />
+    );
+    const submitButton = getByText("S'inscrire");
+
+    const phoneNumberInput = getByLabelText('Numéro de téléphone');
+    const validPhoneNumber = [
+      {
+        value: "0" + faker.string.numeric({ length: 9 }),
+        error: "Le numéro de téléphone n'est pas valide"
+      },
+      {
+        value: "+33" + faker.string.numeric({ length: 9 }),
+        error: "Le numéro de téléphone n'est pas valide"
+      },
+      {
+        value: ("0" + faker.string.numeric({ length: 9 })).match(/.{2}/g).join(' '),
+        error: "Le numéro de téléphone n'est pas valide"
+      }
+    ]
+
+    for (const { value, error } of validPhoneNumber) {
+      await act(async () => {
+        await fireEvent.input(phoneNumberInput, { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
+      });
+    }
+  });
+
   test("Display errors for invalid age upon form submission", async () => {
     const { getByLabelText, getByText } = render(
       <Form
@@ -229,6 +367,43 @@ describe("Sign In Form Test", () => {
 
       await waitFor(() => {
         expect(getByText(error)).toBeInTheDocument();
+      });
+    }
+  });
+
+  test("Don't display errors on valid age", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={signInFormData}
+      />
+    );
+    const submitButton = getByText("S'inscrire");
+
+    const ageInput = getByLabelText('Âge');
+    const validAge = {
+      value: faker.number.int({ min: 18, max: 150 }),
+      errors: [
+        {
+          message: 'Vous devez avoir au minimum 18 ans'
+        },
+        {
+          message: 'Vous ne pouvez pas avoir plus de 150 ans'
+        },
+        {
+          message: "L'age n'est pas valide"
+        }
+      ]
+    }
+
+    await act(async () => {
+      await fireEvent.input(ageInput, { target: { value: validAge.value } });
+      await fireEvent.click(submitButton);
+    });
+    
+    for (const { message } of validAge.errors) {
+      await waitFor(() => {
+        expect(queryByText(message)).toBeNull();
       });
     }
   });
