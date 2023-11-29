@@ -8,7 +8,7 @@ export const logInFormData = {
       options: {
         required: 'Veuillez renseigner votre numéro de téléphone',
         pattern: {
-          value: /^((\+)33|0|0033)[1-9](\d{2}){4}$/g,
+          value: /^(?:\+33\s?|0)[1-9]([.|\s|-]?\d{2}){4}$/g,
           message: "Le numéro de téléphone n'est pas valide"
         }
       }
