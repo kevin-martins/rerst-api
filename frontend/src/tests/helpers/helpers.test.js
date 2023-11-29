@@ -1,7 +1,7 @@
 import { normaliseData } from "../../helpers/helpers";
 
 describe("Helpers Tests", () => {
-    it("should trim, lowerCase and capitalize the data's strings", () => {
+    it("should trim, lowerCase and capitalize the each object's strings", () => {
         const dataMock = {
             first_name: "    JeAn  ",
             last_name: "  PIerRe  ",
