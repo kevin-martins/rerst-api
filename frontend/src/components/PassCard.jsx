@@ -12,7 +12,7 @@ const PassCard = ({ passId, pass, setIsUpdating, currentLevel, setData }) => {
   }
 
   return (
-    <li className='relative w-48 pb-2 bg-gray-900 rounded-md text-center'>
+    <li className='relative w-48 pb-2 bg-gray-900 rounded-md text-center mx-auto'>
       <p
         className='w-full bg-gradient-to-r rounded-t-md from-indigo-500 via-purple-500 to-pink-500 p-2 text-lg'
       >

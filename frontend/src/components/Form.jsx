@@ -8,12 +8,12 @@ const Form = ({ onSubmit, formData, defaultValues = {} }) => {
 
   return (
     <form
-      className='flex flex-col gap-1 max-w-md'
+      className='flex flex-col gap-1 sm:max-w-md sm:w-full w-72 mx-auto'
       onSubmit={handleSubmit((data) => onSubmit(normaliseData(data)))}
     >
       {formData.fields.map(field => (
         <div key={field.id} className=''>
-          <label htmlFor={field.id} className="pr-2 my-auto w-44">
+          <label htmlFor={field.id}>
             {field.options?.required && <span className='text-red-500'>* </span>}
             {field.name}
           </label>

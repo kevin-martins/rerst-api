@@ -20,9 +20,9 @@ const UserAvailablePlaces = () => {
       {places.length > 0 && <p className='my-2'>{places.length} places disponnible{places.length > 1 ? 's' : ''}</p>}
       {isLoading
         ? <Loading />
-        : <ul className='grid grid-flow-row grid-cols-3 gap-4'>
+        : <ul className='flex flex-wrap gap-5'>
             {places.map(place => (
-              <li className='bg-slate-900 text-center p-2 rounded-lg'>
+              <li className='sm:w-72 w-full bg-slate-900 mx-auto text-white rounded-lg text-center py-2'>
                 <p>{place.phone_number}</p>
                 <p>{place.address}</p>
                 <div className='flex gap-x-2'>

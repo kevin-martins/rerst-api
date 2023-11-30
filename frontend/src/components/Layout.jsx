@@ -6,10 +6,10 @@ import Footer from './Footer';
 const Layout = ({ setIsLogged, user }) => {
   return (
     <div className='bg-slate-800'>
-      <header className='bg-slate-800 fixed w-full h-content pt-8'>
+      <header>
         <Nav setIsLogged={setIsLogged} user={user} />
       </header>
-      <main className='container w-full mx-auto pt-40 pb-12'>
+      <main className='max-w-5xl mx-auto pt-40 pb-12 px-2'>
         <Outlet />
       </main>
       <footer>
