@@ -1,3 +1,15 @@
+const { User } = require('../models');
+const { normalisePhoneNumber } = require('./helpers')
+
+const isPhoneNumberUnique = (obj, phoneNumber) => {
+  for (let { phone_number } of obj) {
+    if (phone_number === normalisePhoneNumber(phoneNumber)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 const isLevelValid = (level) => {
   if (level > 5 || level < 1) {
     return false;
@@ -29,6 +41,7 @@ const isObjectKeysDefined = (obj, keys) => {
 }
 
 module.exports = {
+  isPhoneNumberUnique,
   isLevelValid,
   isPlaceAccessValid,
   isAgeValid,

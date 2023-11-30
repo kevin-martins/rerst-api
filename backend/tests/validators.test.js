@@ -1,13 +1,47 @@
 const { faker } = require('@faker-js/faker');
 const {
+  isPhoneNumberUnique,
   isLevelValid,
   isPlaceAccessValid,
   isAgeValid,
-  isObjectKeysDefined,
-  isObjectKeysUniques
+  isObjectKeysDefined
  } = require("../helpers/validator");
 
 describe('Check Validators', () => {
+  it('should return true if phone number is unique', async () => {
+    const userMock = [
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      },
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      },
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      }
+    ];
+    userMock.forEach(() => {
+      expect(isPhoneNumberUnique(userMock, "+33" + faker.string.numeric({ length: 9 }))).toBe(true);
+    });
+  });
+
+  it('should return false if phone number exist', async () => {
+    const userMock = [
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      },
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      },
+      {
+        phone_number: "0" + faker.string.numeric({ length: 9, exclude: ['0'] })
+      }
+    ];
+    userMock.forEach(mock => {
+      expect(isPhoneNumberUnique(userMock, "+33" + mock.phone_number.replace('0', ''))).toBe(false);
+    });
+  });
+
   it('should return true if level between 1 and 5 included', async () => {
     const levels = [
       faker.number.int({ min: 1, max: 5 }),
