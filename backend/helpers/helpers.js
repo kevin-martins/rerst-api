@@ -1,7 +1,12 @@
-const { isValueDefined } = require("./validator");
-
 const addLocalPath = (path) => {
   return 'http://localhost:8080' + path;
 }
 
-module.exports = { addLocalPath };
+const normalisePhoneNumber = (phoneNumber) => {
+  return phoneNumber.replace(/\s/g, '').replace(/^\+33/, '0');
+}
+
+module.exports = {
+  addLocalPath,
+  normalisePhoneNumber,
+};
