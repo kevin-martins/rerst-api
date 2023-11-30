@@ -175,6 +175,7 @@
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
 const { isPlaceAccessValid, isObjectKeysDefined, isAgeValid } = require('../helpers/validator');
+const { normalisePhoneNumber } = require('../helpers/helpers');
 
 exports.createUser = async (req, res) => {
   try {
@@ -192,7 +193,6 @@ exports.createUser = async (req, res) => {
     }
 
     delete user._doc.password;
-
     res.status(201).json(user);
   } catch (err) {
     if (err.code === 11000) {
@@ -238,7 +238,12 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { password, ...otherData } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.userId, otherData, { new: true }).select('-password');
+    if (otherData?.phone_number) {
+      otherData.phone_number = normalisePhoneNumber(otherData.phone_number)
+    }
+    const user = await User.findByIdAndUpdate(req.params.userId, {
+      ...otherData,
+    }, { new: true }).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }

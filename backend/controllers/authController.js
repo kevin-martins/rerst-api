@@ -62,6 +62,7 @@ const { User } = require('../models');
 const createUser = require('../helpers/createUser');
 const userController = require('./userController');
 const { isObjectKeysDefined } = require('../helpers/validator');
+const { normalisePhoneNumber } = require('../helpers/helpers');
 
 exports.logIn = async (req, res) => {
   try {
@@ -70,7 +71,7 @@ exports.logIn = async (req, res) => {
     }
 
     const { phone_number, password } = req.body;
-    const user = await User.findOne({ phone_number });
+    const user = await User.findOne({ phone_number: normalisePhoneNumber(phone_number) });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Error: invalid phone number or password' });
     }

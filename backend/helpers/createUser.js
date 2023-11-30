@@ -1,5 +1,6 @@
 const { User, Pass } = require('../models');
 const bcrypt = require('bcrypt');
+const { normalisePhoneNumber } = require('./helpers')
 
 const createUser = async (body) => {
   try {
@@ -15,6 +16,7 @@ const createUser = async (body) => {
 
     const user = await User.create({
       ...body,
+      phone_number: normalisePhoneNumber(body.phone_number),
       pass_id: pass._id,
       password: hashedPassword
     });
