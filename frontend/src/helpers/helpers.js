@@ -19,7 +19,6 @@ export const changeDate = (date) => {
 export const normaliseData = (data) => {
   for (const [key, value] of Object.entries(data)) {
     if (typeof value === 'string' && !key.includes('password')) {
-      console.log(value.trim(), value.toLowerCase(), value.trim().toLowerCase())
       data[key] = capitalize(value.trim().toLowerCase());
     }
   }
