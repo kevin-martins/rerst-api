@@ -81,7 +81,7 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UserUpdate'
  *     responses:
  *       200:
  *         description: The user has successfully been updated
@@ -176,17 +176,11 @@ const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
 const { isPlaceAccessValid, isObjectKeysDefined, isAgeValid } = require('../helpers/validator');
 const { normalisePhoneNumber } = require('../helpers/helpers');
+const mongoose = require('mongoose')
+const { schemaValidationError } = require('../helpers/schemaValidationError')
 
 exports.createUser = async (req, res) => {
   try {
-    if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
-      return res.status(400).json({ message: 'Error: there is required fields missing' });
-    }
-
-    if (!isAgeValid(req.body.age)) {
-      return res.status(401).json({ message: 'Error: age beyond boundaries' });
-    }
-
     const user = await createUser(req.body);
     if (user?.error) {
       return res.status(404).json({ message: user.error });
@@ -195,7 +189,10 @@ exports.createUser = async (req, res) => {
     delete user._doc.password;
     res.status(201).json(user);
   } catch (err) {
-    if (err.code === 11000) {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    } else if (err.code === 11000) {
       return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
@@ -205,7 +202,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select('-password');
+    const users = await User.find({}, '-password');
     if (!users) {
       return res.status(404).json({ message: 'Error: users has not successfully been found' });
     }
@@ -218,13 +215,12 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select('-password');
+    const user = await User.findById(req.params.userId, '-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been found' });
     }
 
     delete user._doc.password;
-
     res.status(200).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
@@ -238,19 +234,21 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { password, ...otherData } = req.body;
-    if (otherData?.phone_number) {
-      otherData.phone_number = normalisePhoneNumber(otherData.phone_number)
-    }
-    const user = await User.findByIdAndUpdate(req.params.userId, {
-      ...otherData,
-    }, { new: true }).select('-password');
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { ...otherData },
+      { new: true, runValidators: true }
+    ).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Error: user has not successfully been updated' });
     }
 
     res.status(200).json(user);
   } catch (err) {
-    if (err.name === 'CastError') {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    } else if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this user does not exist' });
     } else if (err.code === 11000) {
       return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
