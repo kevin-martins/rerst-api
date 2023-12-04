@@ -1,7 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const { normalisePhoneNumber } = require("../helpers/helpers");
 
-describe('Check Validators', () => {
+describe('Check Helpers', () => {
   it('should return true if phone number has successfully been normalised', async () => {
     const phoneNumbers = [
       "0" + faker.string.numeric({ length: 9, exclude: ['0'] }),
