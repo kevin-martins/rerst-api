@@ -174,10 +174,8 @@
 
 const { User, Pass, Place } = require('../models');
 const createUser = require('../helpers/createUser');
-const { isPlaceAccessValid, isObjectKeysDefined, isAgeValid } = require('../helpers/validator');
-const { normalisePhoneNumber } = require('../helpers/helpers');
-const mongoose = require('mongoose')
-const { schemaValidationError } = require('../helpers/schemaValidationError')
+const { isPlaceAccessValid } = require('../helpers/validator')
+const { schemaValidationError } = require('../helpers/schemaValidationError');
 
 exports.createUser = async (req, res) => {
   try {

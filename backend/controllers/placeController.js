@@ -118,23 +118,11 @@
  *         description: Some server error
  */
 
-const { isLevelValid, isAgeValid, isObjectKeysDefined } = require('../helpers/validator');
 const { Place } = require('../models');
+const { schemaValidationError } = require('../helpers/schemaValidationError');
 
 exports.createPlace = async (req, res) => {
   try {
-    if (!isObjectKeysDefined(req.body, ["required_pass_level", "required_age_level"])) {
-      return res.status(400).json({ message: 'Error: there is required fields missing' });
-    }
-
-    if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(401).json({ message: 'Error: level beyond boundaries' });
-    }
-
-    if (!isAgeValid(req.body.required_age_level)) {
-      return res.status(401).json({ message: 'Error: age beyond boundaries' });
-    }
-
     const place = await Place.create(req.body);
     if (!place) {
       return res.status(404).json({ message: 'Error: place has not successfully been created' });
@@ -142,7 +130,10 @@ exports.createPlace = async (req, res) => {
 
     res.status(201).json(place);
   } catch (err) {
-    if (err.code === 11000) {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    } else if (err.code === 11000) {
       return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
@@ -182,14 +173,6 @@ exports.getPlaceById = async (req, res) => {
 
 exports.updatePlace = async (req, res) => {
   try {
-    if (!isLevelValid(req.body.required_pass_level)) {
-      return res.status(401).json({ message: 'Error: level beyond boundaries' });
-    }
-
-    if (!isAgeValid(req.body.required_age_level)) {
-      return res.status(401).json({ message: 'Error: age beyond boundaries' });
-    }
-
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
     if (!place) {
       return res.status(404).json({ message: 'Error: place has not successfully been updated' });
