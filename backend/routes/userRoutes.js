@@ -9,11 +9,36 @@
  *         - last_name
  *         - age
  *         - phone_number
- *         - address
+ *         - password
  *       properties:
- *         pass_id:
+ *         first_name:
  *           type: string
- *           description: The pass id of the current pass the user have
+ *           description: The first name of the user
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
+ *         age:
+ *           type: number
+ *           description: The age of the user
+ *         phone_number:
+ *           type: string
+ *           description: The phone number of the user
+ *         password:
+ *           type: string
+ *           description: The password of the user
+ *         address:
+ *           type: string
+ *           description: The address of the user
+ *       example:
+ *         first_name: Kevin
+ *         last_name: Martins
+ *         age: 25
+ *         phone_number: "0758941358"
+ *         password: "secret"
+ *         address: 25 rue des Champs, 91174 Corbeil-Essonnes
+ *     UserUpdate:
+ *       type: object
+ *       properties:
  *         first_name:
  *           type: string
  *           description: The first name of the user
@@ -30,7 +55,6 @@
  *           type: string
  *           description: The address of the user
  *       example:
- *         pass_id: The New Turing Omnibus
  *         first_name: Kevin
  *         last_name: Martins
  *         age: 25
@@ -39,6 +63,7 @@
  *     UserResponse:
  *       type: object
  *       required:
+ *         - pass_id
  *         - first_name
  *         - last_name
  *         - age
