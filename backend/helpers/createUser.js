@@ -16,7 +16,6 @@ const createUser = async (body) => {
 
     const user = await User.create({
       ...body,
-      phone_number: normalisePhoneNumber(body.phone_number),
       pass_id: pass._id,
       password: hashedPassword
     });
