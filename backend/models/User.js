@@ -39,11 +39,12 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.pre('update', function (next) {
-  if (this._update && this._update.phone_number) {
-    this._update.phone_number = normalisePhoneNumber(this._update.phone_number);
-  }
-  next();
+userSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate();
+    if (update.phone_number) {
+        update.phone_number = normalisePhoneNumber(update.phone_number);
+    }
+    next();
 });
 
 const User = mongoose.model('User', userSchema);
