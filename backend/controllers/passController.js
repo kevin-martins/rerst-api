@@ -118,19 +118,11 @@
  *         description: Some server error
  */
 
-const { isLevelValid, isObjectKeysDefined } = require('../helpers/validator');
 const { Pass } = require('../models');
+const { schemaValidationError } = require('../helpers/schemaValidationError');
 
 exports.createPass = async (req, res) => {
   try {
-    if (!isObjectKeysDefined(req.body, ["level"])) {
-      return res.status(400).json({ message: 'Error: there is required fields missing' });
-    }
-
-    if (!isLevelValid(req.body.level)) {
-      return res.status(401).json({ message: 'Error: pass level beyond boundaries' });
-    }
-
     const pass = await Pass.create(req.body);
     if (!pass) {
       return res.status(404).json({ message: 'Error: pass has not successfully been created' });
@@ -138,6 +130,11 @@ exports.createPass = async (req, res) => {
 
     res.status(201).json(pass);
   } catch (err) {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    }
+
     res.status(500).json({ error: err.message });
   }
 }
@@ -174,10 +171,6 @@ exports.getPassById = async (req, res) => {
 
 exports.updatePass = async (req, res) => {
   try {
-    if (!isLevelValid(req.body.level)) {
-      return res.status(401).json({ message: 'Error: pass level beyond boundaries' });
-    }
-
     const pass = await Pass.findByIdAndUpdate(
       req.params.passId,
       {
@@ -192,7 +185,10 @@ exports.updatePass = async (req, res) => {
 
     res.status(200).json(pass);
   } catch (err) {
-    if (err.name === 'CastError') {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    } else if (err.name === 'CastError') {
       return res.status(404).json({ message: 'Error: the id for this pass does not exist' });
     }
 

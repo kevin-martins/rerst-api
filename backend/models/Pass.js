@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const passSchema = new mongoose.Schema({
   level: {
     type: Number,
-    min: [1, "Error: level should be between 1 and 5"],
-    max: [5, "Error: level should be between 1 and 5"],
-    required: [true, "Error: level is required"],
+    min: [1, "Error: the pass should be upper than 0"],
+    max: [5, "Error: the pass should be lower than 6"],
+    required: true
   },
   created_at: {
     type: Date,

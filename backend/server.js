@@ -55,7 +55,7 @@ app.use(
 
 app.use((req, res) => res.status(404).send('Route not found'));
 
-databaseConnection('development')
+databaseConnection('tests')
   .then(() => {
     app.listen(PORT, async () => {
       console.log(`server starts on port => ${PORT}`);

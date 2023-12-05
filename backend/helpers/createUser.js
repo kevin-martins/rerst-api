@@ -1,5 +1,6 @@
 const { User, Pass } = require('../models');
 const bcrypt = require('bcrypt');
+const { normalisePhoneNumber } = require('./helpers')
 
 const createUser = async (body) => {
   try {

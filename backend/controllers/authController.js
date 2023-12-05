@@ -19,9 +19,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/UserResponse'
+ *               $ref: '#/components/schemas/UserResponse'
  *       400:
  *         description: Some required parameters are missing in your request
  *       401:
@@ -57,11 +55,14 @@
  *         description: Some server error
  */
 
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
 const createUser = require('../helpers/createUser');
-const userController = require('./userController');
 const { isObjectKeysDefined } = require('../helpers/validator');
+const { schemaValidationError } = require('../helpers/schemaValidationError');
+const { normalisePhoneNumber } = require('../helpers/helpers');
+const jwt = require('jsonwebtoken');
 
 exports.logIn = async (req, res) => {
   try {
@@ -70,20 +71,23 @@ exports.logIn = async (req, res) => {
     }
 
     const { phone_number, password } = req.body;
-    const user = await User.findOne({ phone_number });
+    const user = await User.findOne({ phone_number: normalisePhoneNumber(phone_number) });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Error: invalid phone number or password' });
     }
 
-    res.status(200).json(user);
+    delete user._doc.password;
+    const token = jwt.sign({ ...user }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    res.status(200).json({ ...user._doc, token });
   } catch (err) {
+    console.log(err)
     res.status(500).json({ error: err.message });
   }
 }
 
 exports.signIn = async (req, res) => {
   try {
-    if (!isObjectKeysDefined(req.body, ["first_name", "last_name", "age", "phone_number", "password"])) {
+    if (!isObjectKeysDefined(req.body, ["password_confirmation", "password"])) {
       return res.status(400).json({ message: 'Error: there is required fields missing' });
     }
     const { password, password_confirmation } = req.body;
@@ -97,9 +101,13 @@ exports.signIn = async (req, res) => {
     }
 
     delete user._doc.password;
-    res.status(201).json(user);
+    const token = jwt.sign({ ...user }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    res.status(201).json({ ...user._doc, token });
   } catch (err) {
-    if (err.code === 11000) {
+    const { status, message } = schemaValidationError(err);
+    if (status && message) {
+      return res.status(status).json({ message });
+    } else if (err.code === 11000) {
       return res.status(401).json({ message: 'Error: trying to duplicate a unique key' });
     }
 
