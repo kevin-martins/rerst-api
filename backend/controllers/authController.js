@@ -19,9 +19,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/UserResponse'
+ *               $ref: '#/components/schemas/UserResponse'
  *       400:
  *         description: Some required parameters are missing in your request
  *       401:
