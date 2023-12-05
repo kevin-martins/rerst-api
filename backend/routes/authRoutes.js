@@ -29,11 +29,11 @@
  *         password:
  *           type: string
  *           description: The password of the User
- *           example: jesuisunelicorne
+ *           example: string
  *         password_confirmation:
  *           type: string
  *           description: The password of the User a second time to prevent misspellings
- *           example: jesuisunelicorne
+ *           example: string
  */
 
 const express = require('express');
