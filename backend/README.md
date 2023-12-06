@@ -110,28 +110,28 @@ PORT=3000`
 
 ## Folder Structure
 
-  `/backend
-  ├── controllers/
-  |   ├── authController.js
-  │   ├── userController.js
-  │   ├── passController.js
-  │   └── placeController.js
-  ├── models/
-  │   ├── User.js
-  │   ├── Pass.js
-  │   └── Place.js
-  ├── routes/
-  │   ├── authRoutes.js
-  │   ├── userRoutes.js
-  │   ├── passRoutes.js
-  │   └── placeRoutes.js
-  ├── tests/
-  │   ├── models/
-  │   ├── routes/
-  │   ├── helpers.test.js
-  │   └── validators.test.js
-  ├── data.json
-  └── load_data.js`
+  /backend  
+  ├── controllers/  
+  |   ├── authController.js  
+  │   ├── userController.js  
+  │   ├── passController.js  
+  │   └── placeController.js  
+  ├── models/  
+  │   ├── User.js  
+  │   ├── Pass.js  
+  │   └── Place.js  
+  ├── routes/  
+  │   ├── authRoutes.js  
+  │   ├── userRoutes.js  
+  │   ├── passRoutes.js  
+  │   └── placeRoutes.js  
+  ├── tests/  
+  │   ├── models/  
+  │   ├── routes/  
+  │   ├── helpers.test.js  
+  │   └── validators.test.js  
+  ├── data.json  
+  └── load_data.js  
 
 ## Authors
 
