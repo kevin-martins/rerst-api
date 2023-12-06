@@ -1,52 +1,52 @@
-# Frontend README
+# README du Frontend
 
-This repository contains the frontend code for the application, responsible for user interactions with the backend database, providing a smooth and comfortable user experience.
+Ce référentiel contient le code frontend de l'application, responsable des interactions utilisateur avec la base de données backend, offrant une expérience utilisateur fluide et confortable.
 
-## Installation and Setup
+## Installation et Configuration
 
-### Prerequisites
-- Node.js installed locally.
+### Prérequis
+- Node.js installé localement.
 
-### Steps
-1. Clone this repository.
-2. Navigate to the `/frontend` directory.
-3. Run `yarn` to install frontend dependencies.
-4. Configure the backend API endpoint URLs in the React code, usually in `src/api.js` or environment variables.
+### Étapes
+1. Cloner ce référentiel.
+2. Accéder au répertoire `/frontend`.
+3. Exécuter `yarn` pour installer les dépendances frontend.
+4. Configurer les URL de point d'accès de l'API backend dans le code React, généralement dans `src/api.js` ou dans des variables d'environnement.
 
-## Available Routes
+## Routes Disponibles
 
-### User Creation
-- `/`: Sign-in page for creating a new user using the `User.create` functionality.
+### Création d'Utilisateur
+- `/`: Page de connexion pour créer un nouvel utilisateur en utilisant la fonction `User.create`.
 
-### Profile Management
-- `/profile`: Update user information and access your pass profile.
-- `/passes/pass_id`: Update pass level for a specific pass.
+### Gestion de Profil
+- `/profile`: Mettre à jour les informations de l'utilisateur et accéder à votre profil de passe.
+- `/passes/pass_id`: Mettre à jour le niveau d'accès pour un passe spécifique.
 
-### Places
-- `/places`: Access all available places.
-- `/places/id`: Specific page for a particular place.
+### Lieux
+- `/places`: Accéder à tous les lieux disponibles.
+- `/places/id`: Page spécifique pour un lieu particulier.
 
-### User Access
-- `/user/user_id/access`: Allow access if the user has permission.
-- `/user/user_id/places`: Show available places for the user (filtered).
+### Accès Utilisateur
+- `/user/user_id/access`: Autoriser l'accès à un lieu si l'utilisateur a la permission.
+- `/user/user_id/places`: Afficher les lieux disponibles pour l'utilisateur (filtrés).
 
-### Other Routes
-- `/home`: Home page.
-- `/404`: 404 Error page.
+### Autres Routes
+- `/home`: Page d'accueil.
+- `/404`: Page d'erreur 404.
 
-### Testing
+### Tests
 
-The frontend includes tests to ensure its functionalities work as expected.
+Le frontend inclut des tests pour garantir le bon fonctionnement de ses fonctionnalités.
 
-#### Running Tests
-- Run `yarn test` in the `/frontend` directory to execute the tests.
+#### Exécution des Tests
+- Exécuter `yarn test` dans le répertoire `/frontend` pour lancer les tests.
 
-## Usage
+## Utilisation
 
-1. Run `yarn start` in the `/frontend` directory or the `./client.sh`in the root folder to start the React development server.
-2. Access the application in your browser at `http://localhost:frontend_port`.
+1. Exécuter `yarn start` dans le répertoire `/frontend` ou `./client.sh` dans le dossier racine pour démarrer le serveur de développement React.
+2. Accéder à l'application dans votre navigateur à `http://localhost:3000`.
 
-## Folder Structure
+## Structure des Dossiers
 
     /frontend
     ├── public/
@@ -58,11 +58,8 @@ The frontend includes tests to ensure its functionalities work as expected.
     client.sh
     server.sh
 
-## Contributing
-- Contributions to the frontend are welcome! Follow the general contribution guidelines in the main README.
+## Auteurs
+- Kevin Martins
 
-## Authors
-- List of contributors to the frontend implementation.
-
-## License
-- This frontend part is under the same license as the fullstack application (usually MIT License).
+## Licence
+- Cette partie frontend est sous la même licence que l'application fullstack (généralement Licence MIT).
