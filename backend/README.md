@@ -1,84 +1,154 @@
-# Models, Routes and Controllers are implemented like so:
+# Backend - MVC Model
 
-  ## Models:
-    User:
-      - _id (unique, auto-generated)
-      - pass_id (unique)
-      - first_name
-      - last_name
-      - age
-      - phone_number (unique)
-      - address
-    Pass:
-      - _id (unique, auto-generated)
-      - level (1 to 5)
-      - created_at (auto-generated)
-      - updated_at (auto-generated)
-    Place:
-      - address
-      - phone_number (unique)
-      - required_pass_level (1 to 5)
-      - requied_age_level
-  ## Routes
-    userRoutes:
-      - '/users' (post)
-      - '/users' (get)
-      - '/users/{id}' (get)
-      - '/users/{id}' (put)
-      - '/users/{id}' (delete)
-      - '/users/{id}/access' (post)
-      - '/users/{id}/places' (get)
-    passRoutes:
-      - 'passes' (post)
-      - 'passes' (get)
-      - 'passes/{id}' (get)
-      - 'passes/{id}' (put)
-      - 'passes/{id}' (delete)
-    placeRoutes:
-      - 'places' (post)
-      - 'places' (get)
-      - 'places/{id}' (get)
-      - 'places/{id}' (put)
-      - 'places/{id}' (delete)
-  ## Controllers
-    userController:
-      - get
-      - create
-      - update
-      - delete
-      - getById
-      - getAccess
-      - getPlaces
-    passController:
-      - get
-      - create
-      - update
-      - delete
-      - getById
-    placeController:
-      - get
-      - create
-      - update
-      - delete
-      - getById
+This repository contains the backend code for the application, structured around a Model-View-Controller (MVC) architecture to manage User, Pass, and Place entities.
 
-# Swagger
+## Models
 
-  By going to '/api-docs' route, you'll end to the swagger page. There, you'll found a CRUD that allows the user to interact with the Database by Creating, Reading, Updating or Deleting data.
-  
-  ## Collections:
-    - Users
-    - Passes
-    - Places
+### User
+- `_id` (unique, auto-generated)
+- `pass_id` (unique)
+- `first_name`
+- `last_name`
+- `age` (18 to 150)
+- `phone_number` (unique)
+- `password`
+- `address`
 
-  ## Schemas:
-    - Pass (the data the passController needs to interact with a pass):
-    - PassResponse (the data received back from the Database on each pass's interactions)
-    - Place (the data the placeController needs to interact with a place):
-    - PlaceResponse (the data received back from the Database on each place's interactions)
-    - User (the data the userController needs to interact with a user):
-    - UserResponse (the data received back from the Database on each user's interactions)
-    - UserAccess (the data the userController needs to check if the user has the access to a place):
-    - UserAccessResponse (the data received back from the Database on if the user has the access to the place)
+### Pass
+- `_id` (unique, auto-generated)
+- `level` (1 to 5)
+- `created_at` (auto-generated)
+- `updated_at` (auto-generated, auto-updated)
 
+### Place
+- `address`
+- `phone_number` (unique)
+- `required_pass_level` (1 to 5)
+- `required_age_level` (18 to 150)
 
+## Routes
+
+### authRoutes
+- `POST /login`: Log the user if both phone number and password matches
+- `POST /signin`: Create a new user and log as him
+
+### userRoutes
+- `POST /users`: Create a user
+- `GET /users`: Get all users
+- `GET /users/{id}`: Get user by ID
+- `PUT /users/{id}`: Update user by ID
+- `DELETE /users/{id}`: Delete user by ID
+- `POST /users/{id}/access`: Grant access to a place for a user
+- `GET /users/{id}/places`: Get available places for a user
+
+### passRoutes
+- `POST /passes`: Create a pass
+- `GET /passes`: Get all passes
+- `GET /passes/{id}`: Get pass by ID
+- `PUT /passes/{id}`: Update pass by ID
+- `DELETE /passes/{id}`: Delete pass by ID
+
+### placeRoutes
+- `POST /places`: Create a place
+- `GET /places`: Get all places
+- `GET /places/{id}`: Get place by ID
+- `PUT /places/{id}`: Update place by ID
+- `DELETE /places/{id}`: Delete place by ID
+
+## Controllers
+
+### authController
+- `post`: Log the user if both phone number and password matches
+- `post`: Create a new user and log as him
+
+### userController
+- `get`: Retrieve all users or specific user(s)
+- `create`: Create a new user
+- `update`: Update an existing user
+- `delete`: Delete an existing user
+- `getById`: Get user by ID
+- `getAccess`: Grant access to places for a user
+- `getPlaces`: Get available places for a user
+
+### passController
+- `get`: Retrieve all passes or specific pass(es)
+- `create`: Create a new pass
+- `update`: Update an existing pass
+- `delete`: Delete an existing pass
+- `getById`: Get pass by ID
+
+### placeController
+- `get`: Retrieve all places or specific place(s)
+- `create`: Create a new place
+- `update`: Update an existing place
+- `delete`: Delete an existing place
+- `getById`: Get place by ID
+
+## Swagger Route
+
+A Swagger route has been implemented to document the API endpoints. Visit `/api-docs` to explore the API documentation.
+
+## Data Initialization
+
+To populate the database with initial data, a `data.json` file and a `load_data.js` script are provided. Provide data into the .json file and then run `node load_data.js` to push data from the API to the server.
+
+## Tests
+
+Tests have been included to ensure the functionalities of the backend work as expected. Check the `/backend/tests` directory for test files.
+
+## Docker
+
+A Dockerfile is included to facilitate containerization of the backend application. Use the following commands to build and run the Docker container:
+
+### Build Docker Image
+
+```bash docker build -t backend-app .```
+
+### Run Docker Container
+
+docker run -p 3000:3000 backend-app
+
+### Environment Variables
+
+This application utilizes environment variables for configuration. Create a `.env` file in the `/backend` directory with the following variables:
+
+`plaintext
+MONGO_URI=your_database_connection_string
+PORT=3000`
+
+## Error Handling
+
+The backend uses standardized HTTP status codes to communicate errors. For instance, when an request is made, it returns 200 or 201 on success and 400, 401, 403, 404 or 500 status code with an appropriate message in the response body.
+
+## Folder Structure
+
+  /backend  
+  ├── controllers/  
+  |   ├── authController.js  
+  │   ├── userController.js  
+  │   ├── passController.js  
+  │   └── placeController.js  
+  ├── models/  
+  │   ├── User.js  
+  │   ├── Pass.js  
+  │   └── Place.js  
+  ├── routes/  
+  │   ├── authRoutes.js  
+  │   ├── userRoutes.js  
+  │   ├── passRoutes.js  
+  │   └── placeRoutes.js  
+  ├── tests/  
+  │   ├── models/  
+  │   ├── routes/  
+  │   ├── helpers.test.js  
+  │   └── validators.test.js  
+  ├── data.json  
+  ├── load_data.js  
+  ├── .env  
+  └── server.js  
+  server.sh  
+  tests.sh  
+
+## Authors
+
+- Martins Kevin
