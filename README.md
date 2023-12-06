@@ -1,6 +1,6 @@
-# README du Frontend
+# Application Fullstack - Fullstack
 
-Ce référentiel contient le code frontend de l'application, responsable des interactions utilisateur avec la base de données backend, offrant une expérience utilisateur fluide et confortable.
+Ce référentiel contient le code fullstack de l'application, responsable des interactions utilisateur avec la base de données backend, offrant une expérience utilisateur fluide et confortable.
 
 ## Installation et Configuration
 
@@ -9,9 +9,14 @@ Ce référentiel contient le code frontend de l'application, responsable des int
 
 ### Étapes
 1. Cloner ce référentiel.
-2. Accéder au répertoire `/frontend`.
-3. Exécuter `yarn` pour installer les dépendances frontend.
-4. Configurer les URL de point d'accès de l'API backend dans le code React, généralement dans `src/api.js` ou dans des variables d'environnement.
+2. Suivre le README du dossier `/backend` pour run le backend.
+3. Accéder au répertoire `/frontend`.
+4. Exécuter `yarn` pour installer les dépendances frontend.
+5. Configurer les URL de point d'accès de l'API backend dans le code React, généralement dans `src/api.js` ou dans des variables d'environnement.
+
+## Interaction avec le Backend
+
+Le frontend interagit avec le backend via des points d'accès d'API définis. Assurez-vous que le serveur backend est en cours d'exécution lors de l'utilisation de l'application frontend pour accéder et modifier les données backend.
 
 ## Routes Disponibles
 
@@ -48,10 +53,11 @@ Le frontend inclut des tests pour garantir le bon fonctionnement de ses fonction
 
 ## Structure des Dossiers
 
+    /backend
     /frontend
     ├── public/
     ├── src/
-        ├── tests/
+    |   └── tests/
     ├── package.json
     └── tailwind.config.js
     .gitignore
@@ -60,6 +66,3 @@ Le frontend inclut des tests pour garantir le bon fonctionnement de ses fonction
 
 ## Auteurs
 - Kevin Martins
-
-## Licence
-- Cette partie frontend est sous la même licence que l'application fullstack (généralement Licence MIT).
