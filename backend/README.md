@@ -28,7 +28,11 @@ This repository contains the backend code for the application, structured around
 
 ## Routes
 
-### User Routes
+### authRoutes
+- `POST /login`: Log the user if both phone number and password matches
+- `POST /signin`: Create a new user and log as him
+
+### userRoutes
 - `POST /users`: Create a user
 - `GET /users`: Get all users
 - `GET /users/{id}`: Get user by ID
@@ -37,14 +41,14 @@ This repository contains the backend code for the application, structured around
 - `POST /users/{id}/access`: Grant access to a place for a user
 - `GET /users/{id}/places`: Get available places for a user
 
-### Pass Routes
+### passRoutes
 - `POST /passes`: Create a pass
 - `GET /passes`: Get all passes
 - `GET /passes/{id}`: Get pass by ID
 - `PUT /passes/{id}`: Update pass by ID
 - `DELETE /passes/{id}`: Delete pass by ID
 
-### Place Routes
+### placeRoutes
 - `POST /places`: Create a place
 - `GET /places`: Get all places
 - `GET /places/{id}`: Get place by ID
@@ -53,7 +57,11 @@ This repository contains the backend code for the application, structured around
 
 ## Controllers
 
-### UserController
+### authController
+- `post`: Log the user if both phone number and password matches
+- `post`: Create a new user and log as him
+
+### userController
 - `get`: Retrieve all users or specific user(s)
 - `create`: Create a new user
 - `update`: Update an existing user
@@ -62,14 +70,14 @@ This repository contains the backend code for the application, structured around
 - `getAccess`: Grant access to places for a user
 - `getPlaces`: Get available places for a user
 
-### PassController
+### passController
 - `get`: Retrieve all passes or specific pass(es)
 - `create`: Create a new pass
 - `update`: Update an existing pass
 - `delete`: Delete an existing pass
 - `getById`: Get pass by ID
 
-### PlaceController
+### placeController
 - `get`: Retrieve all places or specific place(s)
 - `create`: Create a new place
 - `update`: Update an existing place
@@ -108,6 +116,10 @@ This application utilizes environment variables for configuration. Create a `.en
 MONGO_URI=your_database_connection_string
 PORT=3000`
 
+## Error Handling
+
+The backend uses standardized HTTP status codes to communicate errors. For instance, when an request is made, it returns 200 or 201 on success and 400, 401, 403, 404 or 500 status code with an appropriate message in the response body.
+
 ## Folder Structure
 
   /backend  
@@ -131,7 +143,11 @@ PORT=3000`
   │   ├── helpers.test.js  
   │   └── validators.test.js  
   ├── data.json  
-  └── load_data.js  
+  ├── load_data.js  
+  ├── .env  
+  └── server.js  
+  server.sh  
+  tests.sh  
 
 ## Authors
 
