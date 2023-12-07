@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { act } from 'react-dom/test-utils';
 
 describe("Profile Form Test", () => {
-  test("Display errors for required fields upon form submission", async () => {
+  it("should return an errors if a required field is missing", async () => {
     const { getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -31,7 +31,7 @@ describe("Profile Form Test", () => {
     });
   });
 
-  test("Display errors for invalid age upon form submission", async () => {
+  it("should return an errors if age is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -67,7 +67,7 @@ describe("Profile Form Test", () => {
     }
   });
 
-  test("Display errors for invalid first name upon form submission", async () => {
+  it("should return an errors if first name is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -100,7 +100,7 @@ describe("Profile Form Test", () => {
     }
   });
 
-  test("Display errors for invalid last name upon form submission", async () => {
+  it("should return an errors if last name is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -132,7 +132,7 @@ describe("Profile Form Test", () => {
     }
   });
 
-  test("Display errors for invalid phone number upon form submission", async () => {
+  it("should return an errors if phone number is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -141,7 +141,6 @@ describe("Profile Form Test", () => {
     );
     const submitButton = getByText('Envoyer');
     const phoneNumberInput = getByLabelText('Numéro de téléphone');
-
     const invalidPhoneNumber = [
       {
         value: faker.string.symbol(5),
@@ -167,5 +166,33 @@ describe("Profile Form Test", () => {
         expect(getByText(error)).toBeInTheDocument();
       });
     }
+  });
+
+  it("should submit the form if fields are valid", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={profileFormData}
+      />
+    );
+    const submitButton = getByText('Envoyer');
+    const inputs = [
+      { label: "Prénom", value: "Kevin", error: "Veuillez renseigner votre prénom" },
+      { label: "Nom", value: "Martins", error: "Veuillez renseigner votre nom" },
+      { label: "Âge", value: 25, error: "Veuillez renseigner votre âge" },
+      { label: "Numéro de téléphone", value: "+33614547489", error: "Le numéro de téléphone n'est pas valide" },
+      { label: "", value: "" }
+    ];
+
+    for (const { label, value, error } of inputs) {
+      await act(async () => {
+        await fireEvent.input(getByLabelText(label), { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+      
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
+      });
+    };
   });
 });

@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { act } from 'react-dom/test-utils';
 
 describe("Log In Form Test", () => {
-  test("Display errors for required fields upon form submission", async () => {
+  it("should return an errors if a required fields is missing", async () => {
     const { getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -28,7 +28,7 @@ describe("Log In Form Test", () => {
     });
   });
 
-  test("Display errors for invalid phone number upon form submission", async () => {
+  it("should return an error if phone number is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -65,7 +65,7 @@ describe("Log In Form Test", () => {
     }
   });
 
-  test("Don't display errors on valid phone number", async () => {
+  it("should not return an error if phone number is valid", async () => {
     const { queryByText, getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -77,15 +77,15 @@ describe("Log In Form Test", () => {
     const phoneNumberInput = getByLabelText('Numéro de téléphone');
     const validPhoneNumber = [
       {
-        value: "0" + faker.string.numeric({ length: 9 }),
+        value: "0" + faker.string.numeric({ length: 9, exclude: ['0'] }),
         error: "Le numéro de téléphone n'est pas valide"
       },
       {
-        value: "+33" + faker.string.numeric({ length: 9 }),
+        value: "+33" + faker.string.numeric({ length: 9, exclude: ['0'] }),
         error: "Le numéro de téléphone n'est pas valide"
       },
       {
-        value: ("0" + faker.string.numeric({ length: 9 })).match(/.{2}/g).join(' '),
+        value: ("0" + faker.string.numeric({ length: 9, exclude: ['0'] })).match(/.{2}/g).join(' '),
         error: "Le numéro de téléphone n'est pas valide"
       }
     ]
@@ -101,10 +101,35 @@ describe("Log In Form Test", () => {
       });
     }
   });
+
+  it("should submit the form if fields are valid", async () => {
+    const { queryByText, getByLabelText, getByText } = render(
+      <Form
+        onSubmit={() => { }}
+        formData={logInFormData}
+      />
+    );
+    const submitButton = getByText('Connexion');
+    const inputs = [
+      { label: "Numéro de téléphone", value: "+33614847494", error: "Le numéro de téléphone n'est pas valide" },
+      { label: "Mot de passe", value: "motdepasse", error: 'Veuillez renseigner votre mot de passe' }
+    ];
+
+    for (const { label, value, error } of inputs) {
+      await act(async () => {
+        await fireEvent.input(getByLabelText(label), { target: { value } });
+        await fireEvent.click(submitButton);
+      });
+      
+      await waitFor(() => {
+        expect(queryByText(error)).toBeNull();
+      });
+    };
+  });
 });
 
 describe("Sign In Form Test", () => {
-  test("Display errors for required fields upon form submission", async () => {
+  it("should return errors if required fields is missing", async () => {
     const { getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -122,15 +147,17 @@ describe("Sign In Form Test", () => {
       const lastNameError = getByText('Veuillez renseigner votre nom');
       const phoneNumberError = getByText('Veuillez renseigner votre numéro de téléphone');
       const ageError = getByText('Veuillez renseigner votre âge');
+      const passwordError = getByText('Veuillez renseigner votre mot de passe');
 
       expect(firstNameError).toBeInTheDocument();
       expect(lastNameError).toBeInTheDocument();
       expect(phoneNumberError).toBeInTheDocument();
       expect(ageError).toBeInTheDocument();
+      expect(passwordError).toBeInTheDocument();
     });
   });
 
-  test("Display errors for invalid first name upon form submission", async () => {
+  it("should return an errors if first name is invalid format", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -163,7 +190,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Don't display errors on valid first name", async () => {
+  it("should not return an error if first name is valid", async () => {
     const { queryByText, getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -196,7 +223,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Display errors for invalid last name upon form submission", async () => {
+  it("should return an errors if last name is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -228,7 +255,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Don't display errors on valid last name", async () => {
+  it("should not return an error if last name is valid", async () => {
     const { queryByText, getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -260,7 +287,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Display errors for invalid phone number upon form submission", async () => {
+  it("should return an errors if phone number is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -297,7 +324,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Don't display errors on valid phone number", async () => {
+  it("should not return an error if phone number is valid", async () => {
     const { queryByText, getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -309,15 +336,15 @@ describe("Sign In Form Test", () => {
     const phoneNumberInput = getByLabelText('Numéro de téléphone');
     const validPhoneNumber = [
       {
-        value: "0" + faker.string.numeric({ length: 9 }),
+        value: "0" + faker.string.numeric({ length: 9, exclude: ['0'] }),
         error: "Le numéro de téléphone n'est pas valide"
       },
       {
-        value: "+33" + faker.string.numeric({ length: 9 }),
+        value: "+33" + faker.string.numeric({ length: 9, exclude: ['0'] }),
         error: "Le numéro de téléphone n'est pas valide"
       },
       {
-        value: ("0" + faker.string.numeric({ length: 9 })).match(/.{2}/g).join(' '),
+        value: ("0" + faker.string.numeric({ length: 9, exclude: ['0'] })).match(/.{2}/g).join(' '),
         error: "Le numéro de téléphone n'est pas valide"
       }
     ]
@@ -334,7 +361,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Display errors for invalid age upon form submission", async () => {
+  it("should return an errors if invalid age is invalid", async () => {
     const { getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
@@ -371,7 +398,7 @@ describe("Sign In Form Test", () => {
     }
   });
 
-  test("Don't display errors on valid age", async () => {
+  it("should not return an error if valid age is valid", async () => {
     const { queryByText, getByLabelText, getByText } = render(
       <Form
         onSubmit={() => { }}
