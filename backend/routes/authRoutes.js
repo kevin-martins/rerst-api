@@ -18,10 +18,25 @@
  *     SignIn:
  *       type: object
  *       required:
+ *         - first_name
+ *         - last_name
+ *         - age
  *         - phone_number
  *         - password
  *         - password_confirmation
  *       properties:
+ *         first_name:
+ *           type: string
+ *           description: The first name of the user
+ *           example: Jean
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
+ *           example: David
+ *         age:
+ *           type: number
+ *           description: The age of the user
+ *           example: 38
  *         phone_number:
  *           type: string
  *           description: The phone number (identifier) of the User

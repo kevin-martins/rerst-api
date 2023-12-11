@@ -15,7 +15,7 @@
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/UserResponse'
  *       404:
  *         description: The passes has not been found
  *       500:
