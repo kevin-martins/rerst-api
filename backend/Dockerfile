@@ -1,11 +1,13 @@
-FROM node:14
+FROM node:latest
+
+WORKDIR /backend
 
 COPY package*.json ./
 
 RUN npm install
 
-COPY /backend/* ./
+COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 
-CMD ["node", "app.js"]
+CMD ["npm", "run", "start"]

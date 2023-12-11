@@ -1,5 +1,5 @@
 {
-  "name": "Kata node api",
+  "name": "backend",
   "version": "1.0.0",
   "author": "eXalt IT",
   "contributors": [
@@ -9,7 +9,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "backend": "nodemon ./server.js"
+    "start": "node ./server.js"
   },
   "jest": {
     "testEnvironment": "node"
